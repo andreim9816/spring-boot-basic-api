@@ -21,7 +21,6 @@ public interface ConsultMapper {
     ConsultDto toDto(Consult entity);
 
     @Mapping(source = "address.no", target = "address.number")
-    @Mapping(source = "consults", target = "consultIds", qualifiedByName = "consultsToIds")
     PatientDto toDto(Patient entity);
 
     @Mapping(source = "patientId", target = "patient", qualifiedByName = "idToPatient")

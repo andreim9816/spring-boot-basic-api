@@ -16,7 +16,6 @@ import org.mapstruct.ReportingPolicy;
 public interface PatientMapper {
 
     @Mapping(source = "address.no", target = "address.number")
-    @Mapping(source = "consults", target = "consultIds", qualifiedByName = "consultsToIds")
     PatientDto toDto(Patient entity);
 
     @Mapping(source = "depId", target = "department", qualifiedByName = "idToDepartment")

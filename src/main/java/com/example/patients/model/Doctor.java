@@ -2,9 +2,10 @@ package com.example.patients.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -15,6 +16,10 @@ public class Doctor extends Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "DOCTOR_ID")
     private Long id;
+
+    @OneToMany(mappedBy = "consult", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<Consult> consults;
 
     @ManyToOne
     @JoinColumn(name = "FK_DEPARTMENT_ID")

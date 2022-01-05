@@ -54,11 +54,4 @@ public class MapperQualifier {
                 .map(medicationService::getById)
                 .collect(Collectors.toList());
     }
-
-    @Named("consultsToIds")
-    public List<Long> consultsToIds(List<Consult> consults) {
-        return consults.stream()
-                .map(Consult::getId)
-                .collect(Collectors.toList());
-    }
 }

@@ -13,7 +13,5 @@ public class PatientDto extends PersonDto {
 
     private DepartmentDto department;
 
-    private List<Long> consultIds;
-
     private AddressDto address;
 }

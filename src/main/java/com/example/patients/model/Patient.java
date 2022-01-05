@@ -7,7 +7,6 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.util.List;
 
-
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
@@ -29,7 +28,7 @@ public class Patient extends Person {
     @ToString.Exclude
     private List<Consult> consults;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "FK_ADDRESS_ID")
     @ToString.Exclude
     private Address address;
