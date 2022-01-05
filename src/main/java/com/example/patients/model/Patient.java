@@ -1,6 +1,5 @@
 package com.example.patients.model;
 
-import com.example.patients.service.constraint.UniqueCnp;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -24,7 +23,6 @@ public class Patient extends Person {
 
     @Pattern(regexp = CNP_REGEX, message = "Invalid CNP!")
     @NotBlank(message = "CNP must be provided!")
-    @UniqueCnp
     private String cnp;
 
     @ManyToOne

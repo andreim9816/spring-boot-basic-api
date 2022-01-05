@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class GlobalExceptionAdvice {
 
-    private static final String DEFAULT_MESSAGE = "Please try again later!";
+    private static final String DEFAULT_MESSAGE = "Something went wrong. Please try again later!";
     private static final String NOT_FOUND_MESSAGE = "Entity not found!";
 
     @ExceptionHandler({EntityNotFoundException.class})

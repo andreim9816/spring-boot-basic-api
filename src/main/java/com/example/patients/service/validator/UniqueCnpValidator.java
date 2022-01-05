@@ -9,6 +9,7 @@ import javax.validation.ConstraintValidatorContext;
 
 
 public class UniqueCnpValidator implements ConstraintValidator<UniqueCnp, String> {
+
     private final PatientService patientService;
 
     @Autowired
@@ -19,6 +20,5 @@ public class UniqueCnpValidator implements ConstraintValidator<UniqueCnp, String
     @Override
     public boolean isValid(String cnp, ConstraintValidatorContext constraintValidatorContext) {
         return !patientService.checkIfCnpExists(cnp);
-
     }
 }

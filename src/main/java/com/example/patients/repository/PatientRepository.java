@@ -9,9 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 
-    @Query("SELECT CASE WHEN (COUNT(pat) > 0) THEN TRUE " +
-            "ELSE FALSE " +
-            "END " +
-            "FROM Patient pat WHERE pat.cnp = :cnp")
-    Boolean checkIfAddressIsTakenByPatient(@Param("cnp") String cnp);
+    Boolean existsPatientByCnp(String cnp);
 }

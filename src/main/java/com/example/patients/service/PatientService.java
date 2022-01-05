@@ -30,7 +30,7 @@ public class PatientService {
     }
 
     public Boolean checkIfCnpExists(String cnp) {
-        return patientRepository.checkIfAddressIsTakenByPatient(cnp);
+        return patientRepository.existsPatientByCnp(cnp);
     }
 
     public Patient save(Patient patient) {

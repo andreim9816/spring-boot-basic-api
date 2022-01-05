@@ -5,7 +5,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Data
@@ -17,10 +17,10 @@ public class Medication {
     @Column(name = "MEDICATION_ID")
     private Long id;
 
-    @NotNull(message = "Medication name must be provided!")
+    @NotBlank(message = "Medication name must be provided!")
     private String name;
 
-    @NotNull(message = "Quantity must be provided!")
+    @NotBlank(message = "Quantity must be provided!")
     @Min(value = 1, message = "Quantity must be positive!")
     private Integer quantity;
 
