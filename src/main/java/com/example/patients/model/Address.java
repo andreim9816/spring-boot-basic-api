@@ -1,6 +1,7 @@
 package com.example.patients.model;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -10,7 +11,7 @@ public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "PK_ADDRESS_ID")
+    @Column(name = "ADDRESS_ID")
     private Long id;
 
     private String street;
@@ -20,7 +21,7 @@ public class Address {
 
     private String city;
 
-    @OneToOne
-    @JoinColumn(name = "FK_PATIENT_ID")
+    @OneToOne(mappedBy = "address")
+    @ToString.Exclude
     private Patient patient;
 }

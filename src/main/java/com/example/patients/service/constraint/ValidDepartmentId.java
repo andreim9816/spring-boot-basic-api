@@ -12,7 +12,7 @@ import java.lang.annotation.*;
 @Documented
 public @interface ValidDepartmentId {
 
-    String message() default "Invalid department ID";
+    String message() default "Invalid department ID!";
 
     Class<?>[] groups() default {};
 

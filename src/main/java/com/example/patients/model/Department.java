@@ -1,6 +1,7 @@
 package com.example.patients.model;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
@@ -17,8 +18,10 @@ public class Department {
     private String name;
 
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<Doctor> doctors;
 
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<Patient> patients;
 }

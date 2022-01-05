@@ -2,6 +2,7 @@ package com.example.patients.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
@@ -21,11 +22,15 @@ public class Patient extends Person {
 
     @ManyToOne
     @JoinColumn(name = "FK_DEPARTMENT_ID")
+    @ToString.Exclude
     private Department department;
 
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<Consult> consults;
 
-    @OneToOne(mappedBy = "patient")
+    @OneToOne
+    @JoinColumn(name = "FK_ADDRESS_ID")
+    @ToString.Exclude
     private Address address;
 }
