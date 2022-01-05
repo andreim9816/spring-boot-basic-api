@@ -1,13 +1,16 @@
 package com.example.patients.controller;
 
+import com.example.patients.dto.ConsultDto;
 import com.example.patients.dto.DoctorDto;
 import com.example.patients.dto.input.ReqDoctorDto;
 import com.example.patients.dto.input.patch.ReqDoctorDtoPatch;
+import com.example.patients.mapper.ConsultMapper;
 import com.example.patients.mapper.DoctorMapper;
 import com.example.patients.model.Doctor;
 import com.example.patients.service.DoctorService;
 import com.example.patients.service.constraint.ValidDepartmentId;
 import com.example.patients.service.constraint.ValidDoctor;
+import com.example.patients.service.constraint.ValidPatient;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
@@ -28,10 +31,12 @@ public class DoctorController {
 
     private final DoctorService doctorService;
     private final DoctorMapper doctorMapper;
+    private final ConsultMapper consultMapper;
 
-    public DoctorController(DoctorService doctorService, DoctorMapper doctorMapper) {
+    public DoctorController(DoctorService doctorService, DoctorMapper doctorMapper, ConsultMapper consultMapper) {
         this.doctorService = doctorService;
         this.doctorMapper = doctorMapper;
+        this.consultMapper = consultMapper;
     }
 
     @GetMapping
@@ -43,6 +48,24 @@ public class DoctorController {
 
         List<DoctorDto> result = doctorService.getAll()
                 .stream().map(doctorMapper::toDto)
+                .collect(Collectors.toList());
+
+        return ResponseEntity
+                .ok()
+                .body(result);
+    }
+
+    @GetMapping("/{doctor-id}/consults")
+    @Operation(
+            method = "GET",
+            summary = "Get all consultations for a doctor"
+    )
+    public ResponseEntity<List<ConsultDto>> getAll(@PathVariable("doctor-id") @ValidPatient Long doctorId) {
+
+        List<ConsultDto> result = doctorService.getById(doctorId)
+                .getConsults()
+                .stream()
+                .map(consultMapper::toDto)
                 .collect(Collectors.toList());
 
         return ResponseEntity

@@ -1,12 +1,14 @@
 package com.example.patients.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @Entity
@@ -30,4 +32,22 @@ public class Medication {
             inverseJoinColumns = @JoinColumn(name = "CONSULT_ID"))
     @ToString.Exclude
     private List<Consult> consults;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Medication)) {
+            return false;
+        }
+
+        return Objects.equals(id, ((Medication) o).id);
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (quantity * id);
+    }
+
 }

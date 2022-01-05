@@ -1,10 +1,12 @@
 package com.example.patients.controller;
 
 import com.example.patients.dto.ConsultDto;
+import com.example.patients.dto.MedicationDto;
 import com.example.patients.dto.PatientDto;
 import com.example.patients.dto.input.ReqPatientDto;
 import com.example.patients.dto.input.patch.ReqPatientDtoPatch;
 import com.example.patients.mapper.ConsultMapper;
+import com.example.patients.mapper.MedicationMapper;
 import com.example.patients.mapper.PatientMapper;
 import com.example.patients.model.Patient;
 import com.example.patients.service.PatientService;
@@ -31,11 +33,13 @@ public class PatientController {
     private final PatientService patientService;
     private final PatientMapper patientMapper;
     private final ConsultMapper consultMapper;
+    private final MedicationMapper medicationMapper;
 
-    public PatientController(PatientService patientService, PatientMapper patientMapper, ConsultMapper consultMapper) {
+    public PatientController(PatientService patientService, PatientMapper patientMapper, ConsultMapper consultMapper, MedicationMapper medicationMapper) {
         this.patientService = patientService;
         this.patientMapper = patientMapper;
         this.consultMapper = consultMapper;
+        this.medicationMapper = medicationMapper;
     }
 
     @GetMapping
@@ -84,6 +88,43 @@ public class PatientController {
         return ResponseEntity
                 .ok()
                 .body(result);
+    }
+
+    @GetMapping("/longestHospitalized")
+    @Operation(
+            method = "GET",
+            summary = "Get the longest hospitalized patient"
+    )
+    public ResponseEntity<PatientDto> getLongestHospitalizedPatient() {
+
+        Patient patient = patientService.getLongestHospitalizedPatient();
+        if (patient != null) {
+            PatientDto result = patientMapper.toDto(patient);
+
+            return ResponseEntity
+                    .ok()
+                    .body(result);
+        } else {
+            return ResponseEntity
+                    .noContent()
+                    .build();
+        }
+    }
+
+    @GetMapping("/{patient-id}/medications")
+    @Operation(
+            method = "GET",
+            summary = "Get all medications administrated to a patient"
+    )
+    public ResponseEntity<List<MedicationDto>> getMedicationsForPatient(@PathVariable("patient-id") @ValidPatient Long id) {
+
+        List<MedicationDto> medications = patientService.getUniqueMedicationsInConsults(id).stream()
+                .map(medicationMapper::toDto)
+                .collect(Collectors.toList());
+
+        return ResponseEntity
+                .ok()
+                .body(medications);
     }
 
     @PostMapping("/{department-id}")

@@ -8,6 +8,4 @@ import lombok.Data;
 public class ErrorBody {
 
     private String message;
-
-
 }
