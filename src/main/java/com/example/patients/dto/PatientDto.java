@@ -13,7 +13,7 @@ public class PatientDto extends PersonDto {
 
     private DepartmentDto department;
 
-    private List<ConsultDto> consults;
+    private List<Long> consultIds;
 
     private AddressDto address;
 }

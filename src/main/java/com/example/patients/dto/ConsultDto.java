@@ -1,5 +1,6 @@
 package com.example.patients.dto;
 
+import com.example.patients.model.Patient;
 import lombok.Data;
 
 import java.util.Date;
@@ -20,7 +21,7 @@ public class ConsultDto {
 
     private DoctorDto doctor;
 
-    private Long patientId;
+    private PatientDto patient;
 
     private List<MedicationDto> medications;
 }

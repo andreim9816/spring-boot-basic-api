@@ -1,17 +1,36 @@
 package com.example.patients.mapper;
 
 import com.example.patients.dto.ConsultDto;
+import com.example.patients.dto.PatientDto;
+import com.example.patients.dto.input.ReqConsultDto;
+import com.example.patients.dto.input.ReqMedicationDto;
+import com.example.patients.mapper.qualifier.MapperQualifier;
 import com.example.patients.model.Consult;
+import com.example.patients.model.Medication;
+import com.example.patients.model.Patient;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring",
-        unmappedTargetPolicy = ReportingPolicy.WARN)
+        unmappedTargetPolicy = ReportingPolicy.WARN,
+        uses = MapperQualifier.class)
 public interface ConsultMapper {
 
-    @Mapping(source = "patient.id", target = "patientId")
     ConsultDto toDto(Consult entity);
 
-    Consult toEntity(ConsultDto dto);
+    @Mapping(source = "address.no", target = "address.number")
+    @Mapping(source = "consults", target = "consultIds", qualifiedByName = "consultsToIds")
+    PatientDto toDto(Patient entity);
+
+    @Mapping(source = "patientId", target = "patient", qualifiedByName = "idToPatient")
+    @Mapping(source = "doctorId", target = "doctor", qualifiedByName = "idToDoctor")
+    @Mapping(source = "medicationIds", target = "medications", qualifiedByName = "idsToMedications")
+    Consult toEntity(ReqConsultDto dto);
+
+    @Mapping(source = "patientId", target = "patient", qualifiedByName = "idToPatient")
+    @Mapping(source = "doctorId", target = "doctor", qualifiedByName = "idToDoctor")
+    @Mapping(source = "medicationIds", target = "medications", qualifiedByName = "idsToMedications")
+    Consult update(ReqConsultDto req, @MappingTarget Consult entity);
 }

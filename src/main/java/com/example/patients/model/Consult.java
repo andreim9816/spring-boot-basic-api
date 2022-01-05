@@ -1,6 +1,7 @@
 package com.example.patients.model;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,7 +16,7 @@ public class Consult {
     @Column(name = "CONSULT_ID")
     private Long id;
 
-    private Date date;
+    private Date date = new Date();
 
     private String diagnose;
 
@@ -25,15 +26,18 @@ public class Consult {
 
     @ManyToOne
     @JoinColumn(name = "FK_DOCTOR_ID")
+    @ToString.Exclude
     private Doctor doctor;
 
     @ManyToOne
     @JoinColumn(name = "FK_PATIENT_ID")
+    @ToString.Exclude
     private Patient patient;
 
     @ManyToMany
     @JoinTable(name = "Prescription",
             joinColumns = @JoinColumn(name = "CONSULT_ID"),
             inverseJoinColumns = @JoinColumn(name = "MEDICATION_ID"))
+    @ToString.Exclude
     private List<Medication> medications;
 }

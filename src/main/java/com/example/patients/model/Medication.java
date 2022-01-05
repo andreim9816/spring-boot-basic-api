@@ -1,6 +1,7 @@
 package com.example.patients.model;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
@@ -22,5 +23,6 @@ public class Medication {
     @JoinTable(name = "Prescription",
             joinColumns = @JoinColumn(name = "MEDICATION_ID"),
             inverseJoinColumns = @JoinColumn(name = "CONSULT_ID"))
+    @ToString.Exclude
     private List<Consult> consults;
 }
