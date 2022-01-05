@@ -10,11 +10,12 @@ import javax.validation.constraints.Pattern;
 @Data
 public class ReqAddressDto {
 
-    private static final String REGEX = "^([a-zA-Z',.-]+( [a-zA-Z',.-]+)*)$";
+    public static final String STREET_REGEX = "^([a-zA-Z',.-]+( [a-zA-Z',.-]+)*)$";
+    public static final String CITY_REGEX = "^([a-zA-Z',.-]+( [a-zA-Z',.-]+)*)$";
 
     @Length(min = 3, message = "Street name should have minimum 3 letters!")
     @Length(max = 30, message = "Street name should have maximum 30 letters!")
-    @Pattern(regexp = REGEX, message = "Invalid street name")
+    @Pattern(regexp = STREET_REGEX, message = "Invalid street name")
     private String street;
 
     @NotNull(message = "Number should be provided!")
@@ -23,6 +24,6 @@ public class ReqAddressDto {
 
     @Length(min = 3, message = "City name should have minimum 3 letters!")
     @Length(max = 30, message = "City name should have maximum 30 letters!")
-    @Pattern(regexp = REGEX, message = "Invalid city name")
+    @Pattern(regexp = CITY_REGEX, message = "Invalid city name")
     private String city;
 }

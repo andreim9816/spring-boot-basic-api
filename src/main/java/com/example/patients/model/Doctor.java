@@ -17,7 +17,7 @@ public class Doctor extends Person {
     @Column(name = "DOCTOR_ID")
     private Long id;
 
-    @OneToMany(mappedBy = "consult", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Consult> consults;
 

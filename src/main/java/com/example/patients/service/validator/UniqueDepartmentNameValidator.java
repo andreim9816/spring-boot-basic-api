@@ -1,18 +1,18 @@
 package com.example.patients.service.validator;
 
 import com.example.patients.service.DepartmentService;
-import com.example.patients.service.constraint.ValidDepartmentName;
+import com.example.patients.service.constraint.UniqueDepartmentName;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class DepartmentNameValidator implements ConstraintValidator<ValidDepartmentName, String> {
+public class UniqueDepartmentNameValidator implements ConstraintValidator<UniqueDepartmentName, String> {
 
     private final DepartmentService departmentService;
 
     @Autowired
-    public DepartmentNameValidator(DepartmentService departmentService) {
+    public UniqueDepartmentNameValidator(DepartmentService departmentService) {
         this.departmentService = departmentService;
     }
 

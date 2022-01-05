@@ -1,11 +1,16 @@
 package com.example.patients.model;
 
+import com.example.patients.service.constraint.UniqueCnp;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.List;
+
+import static com.example.patients.dto.input.ReqPatientDto.CNP_REGEX;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -17,6 +22,9 @@ public class Patient extends Person {
     @Column(name = "PATIENT_ID")
     private Long id;
 
+    @Pattern(regexp = CNP_REGEX, message = "Invalid CNP!")
+    @NotBlank(message = "CNP must be provided!")
+    @UniqueCnp
     private String cnp;
 
     @ManyToOne
