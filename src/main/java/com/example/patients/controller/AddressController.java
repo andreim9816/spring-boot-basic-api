@@ -6,18 +6,22 @@ import com.example.patients.mapper.AddressMapper;
 import com.example.patients.model.Address;
 import com.example.patients.service.AddressService;
 import com.example.patients.service.constraint.ValidAddress;
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/addresses")
 @Validated
+@Api(value = "/addresses",
+        tags = "Addresses")
 public class AddressController {
 
     private final AddressService addressService;
@@ -70,7 +74,7 @@ public class AddressController {
         AddressDto result = addressMapper.toDto(savedAddress);
 
         return ResponseEntity
-                .ok()
+                .created(URI.create(String.format("addresses/%s", result.getId())))
                 .body(result);
     }
 

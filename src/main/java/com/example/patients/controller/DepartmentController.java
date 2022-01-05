@@ -10,6 +10,7 @@ import com.example.patients.mapper.PatientMapper;
 import com.example.patients.model.Department;
 import com.example.patients.service.DepartmentService;
 import com.example.patients.service.constraint.ValidDepartmentId;
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +18,15 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/departments")
 @Validated
+@Api(value = "/departments",
+        tags = "Departments")
 public class DepartmentController {
 
     private final DepartmentService departmentService;
@@ -112,7 +116,7 @@ public class DepartmentController {
         DepartmentDto result = departmentMapper.toDto(savedDepartment);
 
         return ResponseEntity
-                .ok()
+                .created(URI.create(String.format("departments/%s", result.getId())))
                 .body(result);
     }
 

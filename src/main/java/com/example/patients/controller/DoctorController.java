@@ -8,18 +8,22 @@ import com.example.patients.model.Doctor;
 import com.example.patients.service.DoctorService;
 import com.example.patients.service.constraint.ValidDepartmentId;
 import com.example.patients.service.constraint.ValidDoctor;
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/doctors")
 @Validated
+@Api(value = "/doctors",
+        tags = "Doctors")
 public class DoctorController {
 
     private final DoctorService doctorService;
@@ -73,7 +77,7 @@ public class DoctorController {
         DoctorDto result = doctorMapper.toDto(savedDoctor);
 
         return ResponseEntity
-                .ok()
+                .created(URI.create(String.format("doctors/%s", result.getId())))
                 .body(result);
     }
 

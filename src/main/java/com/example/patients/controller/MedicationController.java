@@ -1,26 +1,27 @@
 package com.example.patients.controller;
 
-import com.example.patients.dto.DepartmentDto;
 import com.example.patients.dto.MedicationDto;
 import com.example.patients.dto.input.ReqMedicationDto;
 import com.example.patients.mapper.MedicationMapper;
-import com.example.patients.model.Department;
 import com.example.patients.model.Medication;
 import com.example.patients.service.MedicationService;
-import com.example.patients.service.constraint.ValidDepartmentId;
 import com.example.patients.service.constraint.ValidMedication;
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/medications")
 @Validated
+@Api(value = "/medications",
+        tags = "Medications")
 public class MedicationController {
 
     private final MedicationService medicationService;
@@ -73,7 +74,7 @@ public class MedicationController {
         MedicationDto result = medicationMapper.toDto(savedMedication);
 
         return ResponseEntity
-                .ok()
+                .created(URI.create(String.format("medications/%s", result.getId())))
                 .body(result);
     }
 

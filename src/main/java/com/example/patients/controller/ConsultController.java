@@ -1,12 +1,8 @@
 package com.example.patients.controller;
 
 import com.example.patients.dto.ConsultDto;
-import com.example.patients.dto.DoctorDto;
-import com.example.patients.dto.PatientDto;
 import com.example.patients.dto.input.ReqConsultDto;
 import com.example.patients.mapper.ConsultMapper;
-import com.example.patients.mapper.DoctorMapper;
-import com.example.patients.mapper.PatientMapper;
 import com.example.patients.model.Consult;
 import com.example.patients.service.ConsultService;
 import com.example.patients.service.constraint.ValidConsult;
@@ -25,7 +21,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(value = "/consults")
 @Validated
-@Api(tags = "Consults")
+@Api(value = "/consults",
+        tags = "Consults")
 public class ConsultController {
 
     private final ConsultService consultService;
@@ -79,7 +76,7 @@ public class ConsultController {
         ConsultDto result = consultMapper.toDto(savedConsult);
 
         return ResponseEntity
-                .created(URI.create(""))
+                .created(URI.create(String.format("consults/%s", result.getId())))
                 .body(result);
 
     }
