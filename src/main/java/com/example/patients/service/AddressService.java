@@ -1,11 +1,11 @@
 package com.example.patients.service;
 
+import com.example.patients.exception.EntityNotFoundException;
 import com.example.patients.model.Address;
 import com.example.patients.repository.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -24,7 +24,11 @@ public class AddressService {
 
     public Address getById(Long id) {
         return addressRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> EntityNotFoundException.builder()
+                        .entityId(id)
+                        .entityType("Address")
+                        .build()
+                );
     }
 
     public Boolean checkIfAddressExists(Long id) {

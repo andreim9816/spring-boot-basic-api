@@ -9,6 +9,7 @@ import com.example.patients.mapper.ConsultMapper;
 import com.example.patients.mapper.MedicationMapper;
 import com.example.patients.mapper.PatientMapper;
 import com.example.patients.model.Patient;
+import com.example.patients.service.AddressService;
 import com.example.patients.service.PatientService;
 import com.example.patients.service.constraint.ValidDepartmentId;
 import com.example.patients.service.constraint.ValidPatient;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
@@ -32,13 +34,15 @@ import java.util.stream.Collectors;
 public class PatientController {
 
     private final PatientService patientService;
+    private final AddressService addressService;
     private final PatientMapper patientMapper;
     private final ConsultMapper consultMapper;
     private final MedicationMapper medicationMapper;
 
     @Autowired
-    public PatientController(PatientService patientService, PatientMapper patientMapper, ConsultMapper consultMapper, MedicationMapper medicationMapper) {
+    public PatientController(PatientService patientService, AddressService addressService, PatientMapper patientMapper, ConsultMapper consultMapper, MedicationMapper medicationMapper) {
         this.patientService = patientService;
+        this.addressService = addressService;
         this.patientMapper = patientMapper;
         this.consultMapper = consultMapper;
         this.medicationMapper = medicationMapper;
@@ -84,9 +88,9 @@ public class PatientController {
             method = "GET",
             summary = "Get a patient by ID"
     )
-    public ResponseEntity<PatientDto> getById(@PathVariable("patient-id") @ValidPatient Long id) {
+    public ResponseEntity<PatientDto> getPatientById(@PathVariable("patient-id") @ValidPatient Long patientId) {
 
-        PatientDto result = patientMapper.toDto(patientService.getById(id));
+        PatientDto result = patientMapper.toDto(patientService.getById(patientId));
 
         return ResponseEntity
                 .ok()
@@ -98,7 +102,7 @@ public class PatientController {
             method = "GET",
             summary = "Get the longest hospitalized patient"
     )
-    public ResponseEntity<PatientDto> getLongestHospitalizedPatient() {
+    public ResponseEntity<?> getLongestHospitalizedPatient() {
 
         Patient patient = patientService.getLongestHospitalizedPatient();
         if (patient != null) {
@@ -119,9 +123,9 @@ public class PatientController {
             method = "GET",
             summary = "Get all medications administrated to a patient"
     )
-    public ResponseEntity<List<MedicationDto>> getMedicationsForPatient(@PathVariable("patient-id") @ValidPatient Long id) {
+    public ResponseEntity<List<MedicationDto>> getMedicationsForPatient(@PathVariable("patient-id") @ValidPatient Long patientId) {
 
-        List<MedicationDto> medications = patientService.getUniqueMedicationsInConsults(id).stream()
+        List<MedicationDto> medications = patientService.getUniqueMedicationsInConsults(patientId).stream()
                 .map(medicationMapper::toDto)
                 .collect(Collectors.toList());
 
@@ -156,6 +160,21 @@ public class PatientController {
                                                     @RequestBody @Valid ReqPatientDtoPatch reqPatient) {
 
         Patient patient = patientService.getById(patientId);
+
+        /* Check for uniqueness address at DB level */
+        if (!Objects.equals(reqPatient.getAddressId(), patient.getAddress().getId())) {
+            if (addressService.checkIfAddressIsTakenByPatient(patient.getAddress().getId())) {
+                throw new IllegalArgumentException("Address already taken!");
+            }
+        }
+
+        /* Check for uniqueness of CNP */
+        if (!Objects.equals(reqPatient.getCnp(), patient.getCnp())) {
+            if (patientService.checkIfCnpExists(reqPatient.getCnp())) {
+                throw new IllegalArgumentException("CNP already exists!");
+            }
+        }
+
         Patient updatedPatient = patientMapper.update(reqPatient, patient);
         Patient savedPatient = patientService.save(updatedPatient);
         PatientDto result = patientMapper.toDto(savedPatient);

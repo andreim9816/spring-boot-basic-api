@@ -55,9 +55,9 @@ public class AddressController {
             method = "GET",
             summary = "Get an address by ID"
     )
-    public ResponseEntity<AddressDto> getById(@PathVariable("address-id") @ValidAddress Long id) {
+    public ResponseEntity<AddressDto> getById(@PathVariable("address-id") @ValidAddress Long addressId) {
 
-        AddressDto result = addressMapper.toDto(addressService.getById(id));
+        AddressDto result = addressMapper.toDto(addressService.getById(addressId));
 
         return ResponseEntity
                 .ok()

@@ -81,9 +81,9 @@ public class ConsultController {
             method = "GET",
             summary = "Get a consult by ID"
     )
-    public ResponseEntity<ConsultDto> getById(@PathVariable("consult-id") Long id) {
+    public ResponseEntity<ConsultDto> getById(@PathVariable("consult-id") @ValidConsult Long consultId) {
 
-        ConsultDto result = consultMapper.toDto(consultService.getById(id));
+        ConsultDto result = consultMapper.toDto(consultService.getById(consultId));
 
         return ResponseEntity
                 .ok()

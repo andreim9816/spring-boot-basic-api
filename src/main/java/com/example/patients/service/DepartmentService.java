@@ -1,5 +1,6 @@
 package com.example.patients.service;
 
+import com.example.patients.exception.EntityNotFoundException;
 import com.example.patients.model.Department;
 import com.example.patients.model.Doctor;
 import com.example.patients.model.Patient;
@@ -7,7 +8,6 @@ import com.example.patients.repository.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -33,8 +33,13 @@ public class DepartmentService {
     }
 
     public Department getById(Long id) {
+
         return departmentRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> EntityNotFoundException.builder()
+                        .entityId(id)
+                        .entityType("Department")
+                        .build()
+                );
     }
 
     public Boolean checkIfDepartmentExists(Long id) {

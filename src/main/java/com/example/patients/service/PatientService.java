@@ -1,5 +1,6 @@
 package com.example.patients.service;
 
+import com.example.patients.exception.EntityNotFoundException;
 import com.example.patients.model.Consult;
 import com.example.patients.model.Medication;
 import com.example.patients.model.Patient;
@@ -7,7 +8,6 @@ import com.example.patients.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -31,7 +31,11 @@ public class PatientService {
 
     public Patient getById(Long patientId) {
         return patientRepository.findById(patientId)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> EntityNotFoundException.builder()
+                        .entityId(patientId)
+                        .entityType("Patient")
+                        .build()
+                );
     }
 
     public Boolean checkIfPatientExists(Long patientId) {

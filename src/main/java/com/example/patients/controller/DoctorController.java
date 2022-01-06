@@ -10,7 +10,6 @@ import com.example.patients.model.Doctor;
 import com.example.patients.service.DoctorService;
 import com.example.patients.service.constraint.ValidDepartmentId;
 import com.example.patients.service.constraint.ValidDoctor;
-import com.example.patients.service.constraint.ValidPatient;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +62,8 @@ public class DoctorController {
             method = "GET",
             summary = "Get all consultations for a doctor"
     )
-    public ResponseEntity<List<ConsultDto>> getAll(@PathVariable("doctor-id") @ValidPatient Long doctorId) {
+    public ResponseEntity<List<ConsultDto>> getAllConsultsOfDoctor(
+            @PathVariable("doctor-id") @ValidDoctor Long doctorId) {
 
         List<ConsultDto> result = doctorService.getById(doctorId)
                 .getConsults()
@@ -81,9 +81,9 @@ public class DoctorController {
             method = "GET",
             summary = "Get a doctor by ID"
     )
-    public ResponseEntity<DoctorDto> getById(@PathVariable("doctor-id") @ValidDoctor Long id) {
+    public ResponseEntity<DoctorDto> getDoctorById(@PathVariable("doctor-id") @ValidDoctor Long doctorId) {
 
-        DoctorDto result = doctorMapper.toDto(doctorService.getById(id));
+        DoctorDto result = doctorMapper.toDto(doctorService.getById(doctorId));
 
         return ResponseEntity
                 .ok()

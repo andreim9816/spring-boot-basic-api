@@ -63,9 +63,9 @@ public class DepartmentController {
             method = "GET",
             summary = "Get all doctors in a department"
     )
-    public ResponseEntity<List<DoctorDto>> getAllDoctorsInDepartment(@PathVariable("department-id") Long id) {
+    public ResponseEntity<List<DoctorDto>> getAllDoctorsInDepartment(@PathVariable("department-id") @ValidDepartmentId Long departmentId) {
 
-        List<DoctorDto> result = departmentService.getAllDoctorsInDepartment(id)
+        List<DoctorDto> result = departmentService.getAllDoctorsInDepartment(departmentId)
                 .stream().map(doctorMapper::toDto)
                 .collect(Collectors.toList());
 
@@ -79,9 +79,9 @@ public class DepartmentController {
             method = "GET",
             summary = "Get all patients in a department"
     )
-    public ResponseEntity<List<PatientDto>> getAllPatientsInDepartment(@PathVariable("department-id") Long id) {
+    public ResponseEntity<List<PatientDto>> getAllPatientsInDepartment(@PathVariable("department-id") @ValidDepartmentId Long departmentId) {
 
-        List<PatientDto> result = departmentService.getAllPatientsInDepartment(id)
+        List<PatientDto> result = departmentService.getAllPatientsInDepartment(departmentId)
                 .stream().map(patientMapper::toDto)
                 .collect(Collectors.toList());
 
@@ -95,7 +95,7 @@ public class DepartmentController {
             method = "GET",
             summary = "Get a department by ID"
     )
-    public ResponseEntity<DepartmentDto> getById(@PathVariable("department-id") Long id) {
+    public ResponseEntity<DepartmentDto> getDepartmentById(@PathVariable("department-id") @ValidDepartmentId Long id) {
 
         DepartmentDto result = departmentMapper.toDto(departmentService.getById(id));
 
@@ -143,7 +143,7 @@ public class DepartmentController {
             method = "DELETE",
             summary = "Delete a department"
     )
-    public ResponseEntity<?> deleteDoctor(@PathVariable("department-id") @ValidDepartmentId Long departmentId) {
+    public ResponseEntity<?> deleteDepartment(@PathVariable("department-id") @ValidDepartmentId Long departmentId) {
 
         departmentService.deleteById(departmentId);
 

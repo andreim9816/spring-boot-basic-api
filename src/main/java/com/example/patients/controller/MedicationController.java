@@ -55,9 +55,9 @@ public class MedicationController {
             method = "GET",
             summary = "Get a medication by ID"
     )
-    public ResponseEntity<MedicationDto> getById(@PathVariable("medication-id") @ValidMedication Long id) {
+    public ResponseEntity<MedicationDto> getMedicationById(@PathVariable("medication-id") @ValidMedication Long medicationId) {
 
-        MedicationDto result = medicationMapper.toDto(medicationService.getById(id));
+        MedicationDto result = medicationMapper.toDto(medicationService.getById(medicationId));
 
         return ResponseEntity
                 .ok()
@@ -85,8 +85,8 @@ public class MedicationController {
             method = "PATCH",
             summary = "Update a medication"
     )
-    public ResponseEntity<MedicationDto> updateDoctor(@PathVariable("medication-id") @ValidMedication Long medicationId,
-                                                      @RequestBody @Valid ReqMedicationDto reqMedication) {
+    public ResponseEntity<MedicationDto> updateMedication(@PathVariable("medication-id") @ValidMedication Long medicationId,
+                                                          @RequestBody @Valid ReqMedicationDto reqMedication) {
 
         Medication medication = medicationService.getById(medicationId);
         Medication updatedMedication = medicationMapper.update(reqMedication, medication);
