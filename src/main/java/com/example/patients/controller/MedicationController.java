@@ -8,6 +8,7 @@ import com.example.patients.service.MedicationService;
 import com.example.patients.service.constraint.ValidMedication;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,7 @@ public class MedicationController {
     private final MedicationService medicationService;
     private final MedicationMapper medicationMapper;
 
+    @Autowired
     public MedicationController(MedicationService medicationService, MedicationMapper medicationMapper) {
         this.medicationService = medicationService;
         this.medicationMapper = medicationMapper;

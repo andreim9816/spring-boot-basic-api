@@ -8,6 +8,7 @@ import com.example.patients.service.AddressService;
 import com.example.patients.service.constraint.ValidAddress;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,7 @@ public class AddressController {
     private final AddressService addressService;
     private final AddressMapper addressMapper;
 
+    @Autowired
     public AddressController(AddressService addressService, AddressMapper addressMapper) {
         this.addressService = addressService;
         this.addressMapper = addressMapper;

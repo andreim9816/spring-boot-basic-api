@@ -14,6 +14,7 @@ import com.example.patients.service.constraint.ValidDepartmentId;
 import com.example.patients.service.constraint.ValidPatient;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,7 @@ public class PatientController {
     private final ConsultMapper consultMapper;
     private final MedicationMapper medicationMapper;
 
+    @Autowired
     public PatientController(PatientService patientService, PatientMapper patientMapper, ConsultMapper consultMapper, MedicationMapper medicationMapper) {
         this.patientService = patientService;
         this.patientMapper = patientMapper;
@@ -58,12 +60,13 @@ public class PatientController {
                 .body(result);
     }
 
+    //TODO maybe create another DTO???
     @GetMapping("/{patient-id}/consults")
     @Operation(
             method = "GET",
             summary = "Get all consultations for a patient"
     )
-    public ResponseEntity<List<ConsultDto>> getAll(@PathVariable("patient-id") @ValidPatient Long patientId) {
+    public ResponseEntity<List<ConsultDto>> getAllConsultationForPatient(@PathVariable("patient-id") @ValidPatient Long patientId) {
 
         List<ConsultDto> result = patientService.getById(patientId)
                 .getConsults()

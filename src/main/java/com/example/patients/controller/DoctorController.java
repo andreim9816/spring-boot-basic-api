@@ -13,6 +13,7 @@ import com.example.patients.service.constraint.ValidDoctor;
 import com.example.patients.service.constraint.ValidPatient;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,7 @@ public class DoctorController {
     private final DoctorMapper doctorMapper;
     private final ConsultMapper consultMapper;
 
+    @Autowired
     public DoctorController(DoctorService doctorService, DoctorMapper doctorMapper, ConsultMapper consultMapper) {
         this.doctorService = doctorService;
         this.doctorMapper = doctorMapper;
@@ -47,7 +49,8 @@ public class DoctorController {
     public ResponseEntity<List<DoctorDto>> getAll() {
 
         List<DoctorDto> result = doctorService.getAll()
-                .stream().map(doctorMapper::toDto)
+                .stream()
+                .map(doctorMapper::toDto)
                 .collect(Collectors.toList());
 
         return ResponseEntity

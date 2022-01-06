@@ -31,6 +31,10 @@ public class ConsultService {
         return consultRepository.findById(id).isPresent();
     }
 
+    public List<Consult> getAllConsultsForDoctorAndPatient(Long doctorId, Long patientId) {
+        return consultRepository.getConsultsByDoctorIdAndPatientId(doctorId, patientId);
+    }
+
     public Consult save(Consult department) {
         return consultRepository.save(department);
     }
