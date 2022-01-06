@@ -77,8 +77,8 @@ public class GlobalExceptionAdvice {
     }
 
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorBody> handle(RuntimeException e) {
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorBody> handle(Exception e) {
         return new ResponseEntity<>(
                 ErrorBody.builder()
                         .message(DEFAULT_MESSAGE)
