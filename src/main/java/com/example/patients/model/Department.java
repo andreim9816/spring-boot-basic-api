@@ -1,8 +1,7 @@
 package com.example.patients.model;
 
 import com.example.patients.service.constraint.UniqueDepartmentName;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -10,6 +9,9 @@ import java.util.List;
 
 @Data
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Department {
 
     @Id

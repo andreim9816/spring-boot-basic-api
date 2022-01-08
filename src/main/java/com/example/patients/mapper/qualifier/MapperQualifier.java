@@ -30,7 +30,7 @@ public class MapperQualifier {
 
     @Named("idToDepartment")
     public Department idToDepartment(Long id) {
-        return departmentService.getById(id);
+        return departmentService.getDepartmentById(id);
     }
 
     @Named("idToAddress")

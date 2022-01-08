@@ -49,7 +49,7 @@ public class DepartmentController {
     )
     public ResponseEntity<List<DepartmentDto>> getAll() {
 
-        List<DepartmentDto> result = departmentService.getAll()
+        List<DepartmentDto> result = departmentService.getAllDepartments()
                 .stream().map(departmentMapper::toDto)
                 .collect(Collectors.toList());
 
@@ -97,7 +97,7 @@ public class DepartmentController {
     )
     public ResponseEntity<DepartmentDto> getDepartmentById(@PathVariable("department-id") @ValidDepartmentId Long id) {
 
-        DepartmentDto result = departmentMapper.toDto(departmentService.getById(id));
+        DepartmentDto result = departmentMapper.toDto(departmentService.getDepartmentById(id));
 
         return ResponseEntity
                 .ok()
@@ -128,7 +128,7 @@ public class DepartmentController {
     public ResponseEntity<DepartmentDto> updateDepartment(@PathVariable("department-id") @ValidDepartmentId Long departmentId,
                                                           @RequestBody @Valid ReqDepartmentDto reqDepartment) {
 
-        Department department = departmentService.getById(departmentId);
+        Department department = departmentService.getDepartmentById(departmentId);
         Department updatedDepartment = departmentMapper.update(reqDepartment, department);
         Department savedDepartment = departmentService.save(updatedDepartment);
         DepartmentDto result = departmentMapper.toDto(savedDepartment);
@@ -143,7 +143,7 @@ public class DepartmentController {
             method = "DELETE",
             summary = "Delete a department"
     )
-    public ResponseEntity<?> deleteDepartment(@PathVariable("department-id") @ValidDepartmentId Long departmentId) {
+    public ResponseEntity<Void> deleteDepartment(@PathVariable("department-id") @ValidDepartmentId Long departmentId) {
 
         departmentService.deleteById(departmentId);
 

@@ -2,7 +2,9 @@ package com.example.patients.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -14,6 +16,8 @@ import static com.example.patients.dto.input.ReqPatientDto.CNP_REGEX;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
+@SuperBuilder
+@NoArgsConstructor
 public class Patient extends Person {
 
     @Id

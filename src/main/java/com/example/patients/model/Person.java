@@ -1,6 +1,8 @@
 package com.example.patients.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.MappedSuperclass;
@@ -11,6 +13,8 @@ import static com.example.patients.dto.PersonDto.NAME_REGEX;
 
 @Data
 @MappedSuperclass
+@SuperBuilder
+@NoArgsConstructor
 public abstract class Person {
 
     @Length(min = 3, message = "First name should have minimum 3 letters!")

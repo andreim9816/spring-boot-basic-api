@@ -20,19 +20,19 @@ public class DepartmentService {
         this.departmentRepository = departmentRepository;
     }
 
-    public List<Department> getAll() {
+    public List<Department> getAllDepartments() {
         return departmentRepository.findAll();
     }
 
     public List<Doctor> getAllDoctorsInDepartment(Long departmentId) {
-        return getById(departmentId).getDoctors();
+        return getDepartmentById(departmentId).getDoctors();
     }
 
     public List<Patient> getAllPatientsInDepartment(Long departmentId) {
-        return getById(departmentId).getPatients();
+        return getDepartmentById(departmentId).getPatients();
     }
 
-    public Department getById(Long id) {
+    public Department getDepartmentById(Long id) {
 
         return departmentRepository.findById(id)
                 .orElseThrow(() -> EntityNotFoundException.builder()
@@ -46,8 +46,14 @@ public class DepartmentService {
         return departmentRepository.findById(id).isPresent();
     }
 
-    public Department getByName(String departmentName) {
-        return departmentRepository.findDepartmentByName(departmentName);
+    public Department getDepartmentByName(String departmentName) {
+        Department department = departmentRepository.findDepartmentByName(departmentName);
+
+        if (department == null) {
+            throw new javax.persistence.EntityNotFoundException(String.format("Department with name %s does not exist!", departmentName));
+        }
+
+        return department;
     }
 
     public Department save(Department department) {

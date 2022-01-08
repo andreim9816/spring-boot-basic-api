@@ -18,6 +18,6 @@ public class UniqueDepartmentNameValidator implements ConstraintValidator<Unique
 
     @Override
     public boolean isValid(String departmentName, ConstraintValidatorContext constraintValidatorContext) {
-        return departmentService.getByName(departmentName) == null;
+        return departmentService.getDepartmentByName(departmentName) == null;
     }
 }
