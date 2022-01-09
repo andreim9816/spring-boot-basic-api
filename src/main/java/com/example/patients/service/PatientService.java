@@ -1,6 +1,8 @@
 package com.example.patients.service;
 
+import com.example.patients.dto.input.patch.ReqPatientDtoPatch;
 import com.example.patients.exception.EntityNotFoundException;
+import com.example.patients.mapper.PatientMapper;
 import com.example.patients.model.Consult;
 import com.example.patients.model.Medication;
 import com.example.patients.model.Patient;
@@ -17,19 +19,19 @@ import java.util.stream.Collectors;
 public class PatientService {
 
     private final PatientRepository patientRepository;
-    private final MedicationService medicationService;
+    private final PatientMapper patientMapper;
 
     @Autowired
-    public PatientService(PatientRepository patientRepository, MedicationService medicationService) {
+    public PatientService(PatientRepository patientRepository, PatientMapper patientMapper) {
         this.patientRepository = patientRepository;
-        this.medicationService = medicationService;
+        this.patientMapper = patientMapper;
     }
 
-    public List<Patient> getAll() {
+    public List<Patient> getAllPatients() {
         return patientRepository.findAll();
     }
 
-    public Patient getById(Long patientId) {
+    public Patient getPatientById(Long patientId) {
         return patientRepository.findById(patientId)
                 .orElseThrow(() -> EntityNotFoundException.builder()
                         .entityId(patientId)
@@ -43,35 +45,53 @@ public class PatientService {
     }
 
     public Boolean checkIfCnpExists(String cnp) {
-        return patientRepository.existsPatientByCnp(cnp);
+        return patientRepository.getByCnp(cnp) != null;
     }
 
     public List<Consult> getConsultsForPatient(Long patientId) {
-        return getById(patientId).getConsults();
+        Patient patient = getPatientById(patientId);
+        return getConsultsForPatient(patient);
+    }
+
+    private List<Consult> getConsultsForPatient(Patient patient) {
+        return patient.getConsults();
     }
 
     public Patient getLongestHospitalizedPatient() {
-        return getAll().stream()
-                .map(patient -> getConsultsForPatient(patient.getId()))
-                .flatMap(Collection::stream)
-                .min(Comparator.comparing(Consult::getDate))
-                .map(Consult::getPatient)
-                .orElse(null);
+        List<Patient> patients = getAllPatients();
+
+        if (patients != null) {
+            return getAllPatients().stream()
+                    .map(this::getConsultsForPatient)
+                    .flatMap(Collection::stream)
+                    .min(Comparator.comparing(Consult::getDate))
+                    .map(Consult::getPatient)
+                    .orElse(null);
+        }
+
+        return null;
     }
 
-    public List<Medication> getUniqueMedicationsInConsults(Long patientId) {
+    public List<Medication> getUniqueMedicationsForPatient(Long patientId) {
         return getConsultsForPatient(patientId).stream()
                 .map(Consult::getMedications)
                 .flatMap(Collection::stream)
                 .distinct()
+                .sorted(Comparator.comparing(Medication::getId))
                 .collect(Collectors.toList());
     }
 
-    public Patient save(Patient patient) {
+    public Patient savePatient(Patient patient) {
         return patientRepository.save(patient);
     }
 
-    public void deleteById(Long patientId) {
+    public Patient updatePatient(ReqPatientDtoPatch reqPatientDto, Patient patient) {
+        Patient updatedPatient = patientMapper.update(reqPatientDto, patient);
+
+        return savePatient(updatedPatient);
+    }
+
+    public void deletePatientById(Long patientId) {
         patientRepository.deleteById(patientId);
     }
 }

@@ -1,6 +1,9 @@
 package com.example.patients.service;
 
+import com.example.patients.dto.input.ReqDepartmentDto;
+import com.example.patients.exception.CustomException;
 import com.example.patients.exception.EntityNotFoundException;
+import com.example.patients.mapper.DepartmentMapper;
 import com.example.patients.model.Department;
 import com.example.patients.model.Doctor;
 import com.example.patients.model.Patient;
@@ -9,15 +12,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DepartmentService {
 
     private final DepartmentRepository departmentRepository;
+    private final DepartmentMapper departmentMapper;
 
     @Autowired
-    public DepartmentService(DepartmentRepository departmentRepository) {
+    public DepartmentService(DepartmentRepository departmentRepository, DepartmentMapper departmentMapper) {
         this.departmentRepository = departmentRepository;
+        this.departmentMapper = departmentMapper;
     }
 
     public List<Department> getAllDepartments() {
@@ -46,21 +52,26 @@ public class DepartmentService {
         return departmentRepository.findById(id).isPresent();
     }
 
-    public Department getDepartmentByName(String departmentName) {
-        Department department = departmentRepository.findDepartmentByName(departmentName);
-
-        if (department == null) {
-            throw new javax.persistence.EntityNotFoundException(String.format("Department with name %s does not exist!", departmentName));
-        }
-
-        return department;
+    public Optional<Department> getDepartmentByName(String departmentName) {
+        return Optional.ofNullable(departmentRepository.findDepartmentByName(departmentName));
     }
 
-    public Department save(Department department) {
+    public Department updateDepartment(ReqDepartmentDto reqDepartmentDto, Department department) {
+        Department updatedDepartment = departmentMapper.update(reqDepartmentDto, department);
+        return saveDepartment(updatedDepartment);
+    }
+
+    public Department saveDepartment(Department department) {
+
+        Optional<Department> departmentByName = getDepartmentByName(department.getName());
+        if (departmentByName.isPresent()) {
+            throw new CustomException(String.format("Department with name %s already exists!", department.getName()));
+        }
+
         return departmentRepository.save(department);
     }
 
-    public void deleteById(Long id) {
+    public void deleteDepartmentById(Long id) {
         departmentRepository.deleteById(id);
     }
 }

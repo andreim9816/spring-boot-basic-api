@@ -28,7 +28,7 @@ public class GlobalExceptionAdvice {
     }
 
     /* PathVariab validation */
-    @ExceptionHandler({ConstraintViolationException.class})
+    @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<List<ErrorBody>> handle(ConstraintViolationException e) {
         return new ResponseEntity<>(
                 e.getConstraintViolations().stream()
@@ -42,7 +42,7 @@ public class GlobalExceptionAdvice {
     }
 
     /* ReqDto field validation */
-    @ExceptionHandler({MethodArgumentNotValidException.class})
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<List<ErrorBody>> handle(MethodArgumentNotValidException e) {
         return new ResponseEntity<>(
                 e.getBindingResult().getFieldErrors().stream()

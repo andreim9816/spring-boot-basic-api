@@ -20,12 +20,12 @@ public abstract class Person {
     @Length(min = 3, message = "First name should have minimum 3 letters!")
     @Length(max = 30, message = "First name should have maximum 30 letters!")
     @Pattern(regexp = NAME_REGEX, message = "Invalid first name")
-    @NotBlank
+    @NotBlank(message = "First name must be provided!")
     private String firstName;
 
     @Length(min = 2, message = "Last name should have minimum 2 letters!")
     @Length(max = 30, message = "Last name should have maximum 30 letters!")
     @Pattern(regexp = NAME_REGEX, message = "Invalid last name")
-    @NotBlank
+    @NotBlank(message = "Last name must be provided!")
     private String lastName;
 }

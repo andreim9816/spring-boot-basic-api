@@ -3,10 +3,9 @@ package com.example.patients.mapper;
 import com.example.patients.dto.ConsultDto;
 import com.example.patients.dto.PatientDto;
 import com.example.patients.dto.input.ReqConsultDto;
-import com.example.patients.dto.input.ReqMedicationDto;
 import com.example.patients.mapper.qualifier.MapperQualifier;
+import com.example.patients.mapper.qualifier.PersonQualifier;
 import com.example.patients.model.Consult;
-import com.example.patients.model.Medication;
 import com.example.patients.model.Patient;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,7 +14,7 @@ import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.WARN,
-        uses = MapperQualifier.class)
+        uses = {MapperQualifier.class, PersonQualifier.class})
 public interface ConsultMapper {
 
     ConsultDto toDto(Consult entity);

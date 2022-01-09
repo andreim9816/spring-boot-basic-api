@@ -5,10 +5,12 @@ import com.example.patients.service.constraint.UniqueCnp;
 import com.example.patients.service.constraint.ValidAddress;
 import com.example.patients.service.constraint.ValidAddressNotTaken;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class ReqPatientDto extends PersonDto {
 

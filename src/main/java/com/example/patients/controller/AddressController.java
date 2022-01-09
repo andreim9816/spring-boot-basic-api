@@ -72,7 +72,7 @@ public class AddressController {
     public ResponseEntity<AddressDto> saveAddress(@RequestBody @Valid ReqAddressDto reqAddress) {
 
         Address address = addressMapper.toEntity(reqAddress);
-        Address savedAddress = addressService.save(address);
+        Address savedAddress = addressService.saveAddress(address);
         AddressDto result = addressMapper.toDto(savedAddress);
 
         return ResponseEntity
@@ -89,9 +89,8 @@ public class AddressController {
                                                     @RequestBody @Valid ReqAddressDto reqAddress) {
 
         Address address = addressService.getById(addressId);
-        Address updatedAddress = addressMapper.update(reqAddress, address);
-        Address savedAddress = addressService.save(updatedAddress);
-        AddressDto result = addressMapper.toDto(savedAddress);
+        Address updatedAddress = addressService.updateAddress(reqAddress, address);
+        AddressDto result = addressMapper.toDto(updatedAddress);
 
         return ResponseEntity
                 .ok()
@@ -103,9 +102,9 @@ public class AddressController {
             method = "DELETE",
             summary = "Delete an address"
     )
-    public ResponseEntity<?> deleteAddress(@PathVariable("address-id") @ValidAddress Long addressId) {
+    public ResponseEntity<Void> deleteAddress(@PathVariable("address-id") @ValidAddress Long addressId) {
 
-        addressService.deleteById(addressId);
+        addressService.deleteAddressById(addressId);
 
         return ResponseEntity
                 .noContent()

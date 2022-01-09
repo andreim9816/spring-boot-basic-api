@@ -1,5 +1,6 @@
 package com.example.patients.service;
 
+import com.example.patients.dto.input.ReqDepartmentDto;
 import com.example.patients.exception.EntityNotFoundException;
 import com.example.patients.model.Department;
 import com.example.patients.model.Doctor;
@@ -178,10 +179,10 @@ class DepartmentServiceTest {
 
         when(departmentRepository.findDepartmentByName(departmentName)).thenReturn(department);
 
-        Department result = departmentService.getDepartmentByName(departmentName);
+        Optional<Department> result = departmentService.getDepartmentByName(departmentName);
 
-        assertNotNull(result);
-        assertEquals(department, result);
+        assertTrue(result.isPresent());
+        assertEquals(department, result.get());
     }
 
     @Test
@@ -191,12 +192,9 @@ class DepartmentServiceTest {
 
         when(departmentRepository.findDepartmentByName(departmentName)).thenReturn(null);
 
-        javax.persistence.EntityNotFoundException exception = assertThrows(
-                javax.persistence.EntityNotFoundException.class,
-                () -> departmentService.getDepartmentByName(departmentName));
+        Optional<Department> nullDepartment = departmentService.getDepartmentByName(departmentName);
 
-        assertNotNull(exception);
-        assertEquals(exception.getMessage(), String.format("Department with name %s does not exist!", departmentName));
+        assertTrue(nullDepartment.isEmpty());
     }
 
     @Test
@@ -223,6 +221,34 @@ class DepartmentServiceTest {
         assertFalse(result);
     }
 
+//    @Test
+//    @DisplayName("Update department")
+//    void updateDepartment() {
+//        Long departmentId = 1L;
+//        String departmentName = "Department name";
+//        String departmentNameUpdated = "New department name";
+//
+//        ReqDepartmentDto reqDepartmentDto = new ReqDepartmentDto();
+//        reqDepartmentDto.setName(departmentNameUpdated);
+//
+//        Department departmentToBeUpdated = Department.builder()
+//                .id(departmentId)
+//                .name(departmentName)
+//                .build();
+//
+//        Department departmentSaved = Department.builder()
+//                .id(departmentId)
+//                .name(departmentNameUpdated)
+//                .build();
+//
+//
+//        when(departmentRepository.save(any())).thenReturn(departmentSaved);
+//
+//        Department result = departmentService.updateDepartment(reqDepartmentDto, departmentToBeUpdated);
+//
+//        assertEquals(departmentSaved, result);
+//    }
+
     @Test
     @DisplayName("Save department")
     void saveDepartment() {
@@ -238,13 +264,38 @@ class DepartmentServiceTest {
                 .name(departmentName)
                 .build();
 
+        when(departmentRepository.findDepartmentByName(departmentName)).thenReturn(null);
         when(departmentRepository.save(departmentToBeSaved)).thenReturn(departmentSaved);
 
-        Department result = departmentService.save(departmentToBeSaved);
+        Department result = departmentService.saveDepartment(departmentToBeSaved);
 
         assertEquals(departmentSaved.getId(), result.getId());
         assertEquals(departmentSaved.getName(), result.getName());
     }
+
+//    @Test
+//    @DisplayName("Save department FAILED")
+//    void saveDepartmentFailed() {
+//        Long departmentId = 1L;
+//        String departmentName = "Department name";
+//
+//        Department department = Department.builder()
+//                .id(departmentId)
+//                .name(departmentName)
+//                .build();
+//
+//        Department existingDepartment = Department.builder()
+//                .id(2L)
+//                .name("Already existing dep name")
+//                .build();
+//
+//
+//        when(departmentRepository.findDepartmentByName(departmentName)).thenReturn(existingDepartment);
+//
+//        CustomException exception = assertThrows(CustomException.class, () -> departmentService.saveDepartment(department));
+//
+//        assertEquals(String.format("Department with name %s already exists!", department.getName()), exception.getMessage());
+//    }
 
     @Test
     @DisplayName("Delete department")
@@ -253,7 +304,7 @@ class DepartmentServiceTest {
 
         doNothing().when(departmentRepository).deleteById(departmentId);
 
-        departmentService.deleteById(departmentId);
+        departmentService.deleteDepartmentById(departmentId);
 
         verify(departmentRepository, times(1)).deleteById(departmentId);
     }

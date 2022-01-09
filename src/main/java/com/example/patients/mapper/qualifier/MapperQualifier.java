@@ -1,9 +1,12 @@
 package com.example.patients.mapper.qualifier;
 
-import com.example.patients.model.*;
-import com.example.patients.service.*;
+import com.example.patients.model.Address;
+import com.example.patients.model.Department;
+import com.example.patients.model.Medication;
+import com.example.patients.service.AddressService;
+import com.example.patients.service.DepartmentService;
+import com.example.patients.service.MedicationService;
 import org.mapstruct.Named;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -12,17 +15,11 @@ import java.util.stream.Collectors;
 @Component
 public class MapperQualifier {
 
-    private final DoctorService doctorService;
-    private final PatientService patientService;
     private final AddressService addressService;
     private final DepartmentService departmentService;
     private final MedicationService medicationService;
 
-    @Autowired
-    public MapperQualifier(DoctorService doctorService, PatientService patientService, AddressService addressService,
-                           DepartmentService departmentService, MedicationService medicationService) {
-        this.doctorService = doctorService;
-        this.patientService = patientService;
+    public MapperQualifier(AddressService addressService, DepartmentService departmentService, MedicationService medicationService) {
         this.addressService = addressService;
         this.departmentService = departmentService;
         this.medicationService = medicationService;
@@ -36,16 +33,6 @@ public class MapperQualifier {
     @Named("idToAddress")
     public Address idToAddress(Long id) {
         return addressService.getById(id);
-    }
-
-    @Named("idToDoctor")
-    public Doctor idToDoctor(Long id) {
-        return doctorService.getById(id);
-    }
-
-    @Named("idToPatient")
-    public Patient idToPatient(Long id) {
-        return patientService.getById(id);
     }
 
     @Named("idsToMedications")

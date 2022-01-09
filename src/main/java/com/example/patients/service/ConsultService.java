@@ -1,6 +1,8 @@
 package com.example.patients.service;
 
+import com.example.patients.dto.input.ReqConsultDto;
 import com.example.patients.exception.EntityNotFoundException;
+import com.example.patients.mapper.ConsultMapper;
 import com.example.patients.model.Consult;
 import com.example.patients.repository.ConsultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +14,12 @@ import java.util.List;
 public class ConsultService {
 
     private final ConsultRepository consultRepository;
+    private final ConsultMapper consultMapper;
 
     @Autowired
-    public ConsultService(ConsultRepository consultRepository) {
+    public ConsultService(ConsultRepository consultRepository, ConsultMapper consultMapper) {
         this.consultRepository = consultRepository;
+        this.consultMapper = consultMapper;
     }
 
     public List<Consult> getAll() {
@@ -39,11 +43,17 @@ public class ConsultService {
         return consultRepository.getConsultsByDoctorIdAndPatientId(doctorId, patientId);
     }
 
-    public Consult save(Consult department) {
+    public Consult updateConsult(ReqConsultDto reqConsultDto, Consult consult) {
+        Consult upadatedConsult = consultMapper.update(reqConsultDto, consult);
+
+        return saveConsult(upadatedConsult);
+    }
+
+    public Consult saveConsult(Consult department) {
         return consultRepository.save(department);
     }
 
-    public void deleteById(Long id) {
+    public void deleteConsultById(Long id) {
         consultRepository.deleteById(id);
     }
 }

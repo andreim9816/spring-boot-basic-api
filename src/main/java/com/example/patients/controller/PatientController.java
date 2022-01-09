@@ -55,7 +55,7 @@ public class PatientController {
     )
     public ResponseEntity<List<PatientDto>> getAll() {
 
-        List<PatientDto> result = patientService.getAll()
+        List<PatientDto> result = patientService.getAllPatients()
                 .stream().map(patientMapper::toDto)
                 .collect(Collectors.toList());
 
@@ -72,7 +72,7 @@ public class PatientController {
     )
     public ResponseEntity<List<ConsultDto>> getAllConsultationForPatient(@PathVariable("patient-id") @ValidPatient Long patientId) {
 
-        List<ConsultDto> result = patientService.getById(patientId)
+        List<ConsultDto> result = patientService.getPatientById(patientId)
                 .getConsults()
                 .stream()
                 .map(consultMapper::toDto)
@@ -90,7 +90,7 @@ public class PatientController {
     )
     public ResponseEntity<PatientDto> getPatientById(@PathVariable("patient-id") @ValidPatient Long patientId) {
 
-        PatientDto result = patientMapper.toDto(patientService.getById(patientId));
+        PatientDto result = patientMapper.toDto(patientService.getPatientById(patientId));
 
         return ResponseEntity
                 .ok()
@@ -125,7 +125,7 @@ public class PatientController {
     )
     public ResponseEntity<List<MedicationDto>> getMedicationsForPatient(@PathVariable("patient-id") @ValidPatient Long patientId) {
 
-        List<MedicationDto> medications = patientService.getUniqueMedicationsInConsults(patientId).stream()
+        List<MedicationDto> medications = patientService.getUniqueMedicationsForPatient(patientId).stream()
                 .map(medicationMapper::toDto)
                 .collect(Collectors.toList());
 
@@ -143,7 +143,7 @@ public class PatientController {
                                                   @RequestBody @Valid ReqPatientDto reqPatient) {
 
         Patient patient = patientMapper.toEntityForCreate(departmentId, reqPatient);
-        Patient savedPatient = patientService.save(patient);
+        Patient savedPatient = patientService.savePatient(patient);
         PatientDto result = patientMapper.toDto(savedPatient);
 
         return ResponseEntity
@@ -159,24 +159,22 @@ public class PatientController {
     public ResponseEntity<PatientDto> updatePatient(@PathVariable("patient-id") @ValidPatient Long patientId,
                                                     @RequestBody @Valid ReqPatientDtoPatch reqPatient) {
 
-        Patient patient = patientService.getById(patientId);
+        Patient patient = patientService.getPatientById(patientId);
 
         /* Check for uniqueness address at DB level */
-        if (!Objects.equals(reqPatient.getAddressId(), patient.getAddress().getId())) {
-            if (addressService.checkIfAddressIsTakenByPatient(patient.getAddress().getId())) {
-                throw new IllegalArgumentException("Address already taken!");
-            }
+        if (!Objects.equals(reqPatient.getAddressId(), patient.getAddress().getId())
+                && Boolean.TRUE.equals(addressService.checkIfAddressIsTakenByPatient(patient.getAddress().getId()))) {
+            throw new IllegalArgumentException("Address already taken!");
         }
 
         /* Check for uniqueness of CNP */
-        if (!Objects.equals(reqPatient.getCnp(), patient.getCnp())) {
-            if (patientService.checkIfCnpExists(reqPatient.getCnp())) {
-                throw new IllegalArgumentException("CNP already exists!");
-            }
+        if (!Objects.equals(reqPatient.getCnp(), patient.getCnp())
+                && Boolean.TRUE.equals(patientService.checkIfCnpExists(reqPatient.getCnp()))) {
+            throw new IllegalArgumentException("CNP already exists!");
         }
 
-        Patient updatedPatient = patientMapper.update(reqPatient, patient);
-        Patient savedPatient = patientService.save(updatedPatient);
+        Patient updatedPatient = patientService.updatePatient(reqPatient, patient);
+        Patient savedPatient = patientService.savePatient(updatedPatient);
         PatientDto result = patientMapper.toDto(savedPatient);
 
         return ResponseEntity
@@ -189,9 +187,9 @@ public class PatientController {
             method = "DELETE",
             summary = "Delete a patient"
     )
-    public ResponseEntity<?> deletePatient(@PathVariable("patient-id") @ValidPatient Long patientId) {
+    public ResponseEntity<Void> deletePatient(@PathVariable("patient-id") @ValidPatient Long patientId) {
 
-        patientService.deleteById(patientId);
+        patientService.deletePatientById(patientId);
 
         return ResponseEntity
                 .noContent()

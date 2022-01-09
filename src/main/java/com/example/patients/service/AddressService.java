@@ -1,6 +1,8 @@
 package com.example.patients.service;
 
+import com.example.patients.dto.input.ReqAddressDto;
 import com.example.patients.exception.EntityNotFoundException;
+import com.example.patients.mapper.AddressMapper;
 import com.example.patients.model.Address;
 import com.example.patients.repository.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +14,12 @@ import java.util.List;
 public class AddressService {
 
     private final AddressRepository addressRepository;
+    private final AddressMapper addressMapper;
 
     @Autowired
-    public AddressService(AddressRepository addressRepository) {
+    public AddressService(AddressRepository addressRepository, AddressMapper addressMapper) {
         this.addressRepository = addressRepository;
+        this.addressMapper = addressMapper;
     }
 
     public List<Address> getAll() {
@@ -39,11 +43,17 @@ public class AddressService {
         return addressRepository.checkIfAddressIsTakenByPatient(addressId);
     }
 
-    public Address save(Address address) {
+    public Address saveAddress(Address address) {
         return addressRepository.save(address);
     }
 
-    public void deleteById(Long id) {
+    public Address updateAddress(ReqAddressDto reqConsultDto, Address address) {
+        Address updatedAddress = addressMapper.update(reqConsultDto, address);
+
+        return saveAddress(updatedAddress);
+    }
+
+    public void deleteAddressById(Long id) {
         addressRepository.deleteById(id);
     }
 

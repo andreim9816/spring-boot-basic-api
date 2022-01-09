@@ -72,7 +72,7 @@ public class MedicationController {
     public ResponseEntity<MedicationDto> saveMedication(@RequestBody @Valid ReqMedicationDto reqMedication) {
 
         Medication medication = medicationMapper.toEntity(reqMedication);
-        Medication savedMedication = medicationService.save(medication);
+        Medication savedMedication = medicationService.saveMedication(medication);
         MedicationDto result = medicationMapper.toDto(savedMedication);
 
         return ResponseEntity
@@ -89,9 +89,8 @@ public class MedicationController {
                                                           @RequestBody @Valid ReqMedicationDto reqMedication) {
 
         Medication medication = medicationService.getById(medicationId);
-        Medication updatedMedication = medicationMapper.update(reqMedication, medication);
-        Medication savedMedication = medicationService.save(updatedMedication);
-        MedicationDto result = medicationMapper.toDto(savedMedication);
+        Medication updatedMedication = medicationService.updateMedication(reqMedication, medication);
+        MedicationDto result = medicationMapper.toDto(updatedMedication);
 
         return ResponseEntity
                 .ok()
@@ -103,9 +102,9 @@ public class MedicationController {
             method = "DELETE",
             summary = "Delete a medication"
     )
-    public ResponseEntity<?> deleteDoctor(@PathVariable("medication-id") @ValidMedication Long medicationId) {
+    public ResponseEntity<Void> deleteDoctor(@PathVariable("medication-id") @ValidMedication Long medicationId) {
 
-        medicationService.deleteById(medicationId);
+        medicationService.deleteMedicationById(medicationId);
 
         return ResponseEntity
                 .noContent()

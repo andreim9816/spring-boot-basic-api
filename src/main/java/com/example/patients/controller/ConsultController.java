@@ -98,7 +98,7 @@ public class ConsultController {
     public ResponseEntity<ConsultDto> saveConsult(@RequestBody @Valid ReqConsultDto reqConsult) {
 
         Consult consult = consultMapper.toEntity(reqConsult);
-        Consult savedConsult = consultService.save(consult);
+        Consult savedConsult = consultService.saveConsult(consult);
         ConsultDto result = consultMapper.toDto(savedConsult);
 
         return ResponseEntity
@@ -116,9 +116,8 @@ public class ConsultController {
                                                     @RequestBody @Valid ReqConsultDto reqConsult) {
 
         Consult consult = consultService.getById(consultId);
-        Consult updatedConsult = consultMapper.update(reqConsult, consult);
-        Consult savedConsult = consultService.save(updatedConsult);
-        ConsultDto result = consultMapper.toDto(savedConsult);
+        Consult updatedConsult = consultService.updateConsult(reqConsult, consult);
+        ConsultDto result = consultMapper.toDto(updatedConsult);
 
         return ResponseEntity
                 .ok()
@@ -130,9 +129,9 @@ public class ConsultController {
             method = "DELETE",
             summary = "Delete a consult"
     )
-    public ResponseEntity<?> deleteDoctor(@PathVariable("consult-id") @ValidConsult Long consultId) {
+    public ResponseEntity<Void> deleteDoctor(@PathVariable("consult-id") @ValidConsult Long consultId) {
 
-        consultService.deleteById(consultId);
+        consultService.deleteConsultById(consultId);
 
         return ResponseEntity
                 .noContent()

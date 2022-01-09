@@ -1,11 +1,13 @@
 package com.example.patients.model;
 
-import com.example.patients.service.constraint.UniqueDepartmentName;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.List;
+
+import static com.example.patients.dto.PersonDto.NAME_REGEX;
 
 @Data
 @Entity
@@ -19,8 +21,8 @@ public class Department {
     @Column(name = "DEPARTMENT_ID")
     private Long id;
 
-    @UniqueDepartmentName
     @NotBlank(message = "Department name must be provided!")
+    @Pattern(regexp = NAME_REGEX, message = "Department name is invalid!")
     private String name;
 
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)

@@ -47,7 +47,7 @@ public class DoctorController {
     )
     public ResponseEntity<List<DoctorDto>> getAll() {
 
-        List<DoctorDto> result = doctorService.getAll()
+        List<DoctorDto> result = doctorService.getAllDoctors()
                 .stream()
                 .map(doctorMapper::toDto)
                 .collect(Collectors.toList());
@@ -99,7 +99,7 @@ public class DoctorController {
                                                 @RequestBody @Valid ReqDoctorDto reqDoctor) {
 
         Doctor doctor = doctorMapper.toEntityForCreate(departmentId, reqDoctor);
-        Doctor savedDoctor = doctorService.save(doctor);
+        Doctor savedDoctor = doctorService.saveDoctor(doctor);
         DoctorDto result = doctorMapper.toDto(savedDoctor);
 
         return ResponseEntity
@@ -116,9 +116,8 @@ public class DoctorController {
                                                   @RequestBody @Valid ReqDoctorDtoPatch reqDoctor) {
 
         Doctor doctor = doctorService.getById(doctorId);
-        Doctor updatedDoctor = doctorMapper.update(reqDoctor, doctor);
-        Doctor savedDoctor = doctorService.save(updatedDoctor);
-        DoctorDto result = doctorMapper.toDto(savedDoctor);
+        Doctor updatedDoctor = doctorService.updateDoctor(reqDoctor, doctor);
+        DoctorDto result = doctorMapper.toDto(updatedDoctor);
 
         return ResponseEntity
                 .ok()
@@ -130,9 +129,9 @@ public class DoctorController {
             method = "DELETE",
             summary = "Delete a doctor"
     )
-    public ResponseEntity<?> deleteDoctor(@PathVariable("doctor-id") @ValidDoctor Long doctorId) {
+    public ResponseEntity<Void> deleteDoctor(@PathVariable("doctor-id") @ValidDoctor Long doctorId) {
 
-        doctorService.deleteById(doctorId);
+        doctorService.deleteDoctorById(doctorId);
 
         return ResponseEntity
                 .noContent()

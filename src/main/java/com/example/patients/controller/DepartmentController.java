@@ -112,7 +112,7 @@ public class DepartmentController {
     public ResponseEntity<DepartmentDto> saveDepartment(@RequestBody @Valid ReqDepartmentDto reqDepartment) {
 
         Department department = departmentMapper.toEntity(reqDepartment);
-        Department savedDepartment = departmentService.save(department);
+        Department savedDepartment = departmentService.saveDepartment(department);
         DepartmentDto result = departmentMapper.toDto(savedDepartment);
 
         return ResponseEntity
@@ -129,9 +129,8 @@ public class DepartmentController {
                                                           @RequestBody @Valid ReqDepartmentDto reqDepartment) {
 
         Department department = departmentService.getDepartmentById(departmentId);
-        Department updatedDepartment = departmentMapper.update(reqDepartment, department);
-        Department savedDepartment = departmentService.save(updatedDepartment);
-        DepartmentDto result = departmentMapper.toDto(savedDepartment);
+        Department updateDepartment = departmentService.updateDepartment(reqDepartment, department);
+        DepartmentDto result = departmentMapper.toDto(updateDepartment);
 
         return ResponseEntity
                 .ok()
@@ -145,7 +144,7 @@ public class DepartmentController {
     )
     public ResponseEntity<Void> deleteDepartment(@PathVariable("department-id") @ValidDepartmentId Long departmentId) {
 
-        departmentService.deleteById(departmentId);
+        departmentService.deleteDepartmentById(departmentId);
 
         return ResponseEntity
                 .noContent()
