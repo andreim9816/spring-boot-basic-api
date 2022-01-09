@@ -13,7 +13,7 @@
 
 ### Diagram
 
-![](images/diagram.jpg)
+![](/images/diagram.JPG)
 
 ### Features
 
@@ -68,7 +68,7 @@ For using the application, the requests can be executed via ```swagger``` by goi
 ```http://localhost:8080/swagger-ui/#/```
 <br>
 
-![](images/swagger.jpg)
+![](images/swagger.JPG)
 
 ### Testing
 
