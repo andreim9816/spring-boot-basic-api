@@ -22,11 +22,11 @@ public class AddressService {
         this.addressMapper = addressMapper;
     }
 
-    public List<Address> getAll() {
+    public List<Address> getAllAddresses() {
         return addressRepository.findAll();
     }
 
-    public Address getById(Long id) {
+    public Address getAddressById(Long id) {
         return addressRepository.findById(id)
                 .orElseThrow(() -> EntityNotFoundException.builder()
                         .entityId(id)

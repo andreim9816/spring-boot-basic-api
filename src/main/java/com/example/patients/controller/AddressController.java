@@ -41,7 +41,7 @@ public class AddressController {
     )
     public ResponseEntity<List<AddressDto>> getAll() {
 
-        List<AddressDto> result = addressService.getAll()
+        List<AddressDto> result = addressService.getAllAddresses()
                 .stream().map(addressMapper::toDto)
                 .collect(Collectors.toList());
 
@@ -57,7 +57,7 @@ public class AddressController {
     )
     public ResponseEntity<AddressDto> getById(@PathVariable("address-id") @ValidAddress Long addressId) {
 
-        AddressDto result = addressMapper.toDto(addressService.getById(addressId));
+        AddressDto result = addressMapper.toDto(addressService.getAddressById(addressId));
 
         return ResponseEntity
                 .ok()
@@ -88,7 +88,7 @@ public class AddressController {
     public ResponseEntity<AddressDto> updateAddress(@PathVariable("address-id") @ValidAddress Long addressId,
                                                     @RequestBody @Valid ReqAddressDto reqAddress) {
 
-        Address address = addressService.getById(addressId);
+        Address address = addressService.getAddressById(addressId);
         Address updatedAddress = addressService.updateAddress(reqAddress, address);
         AddressDto result = addressMapper.toDto(updatedAddress);
 

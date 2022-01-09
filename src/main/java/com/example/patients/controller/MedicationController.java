@@ -41,7 +41,7 @@ public class MedicationController {
     )
     public ResponseEntity<List<MedicationDto>> getAll() {
 
-        List<MedicationDto> result = medicationService.getAll()
+        List<MedicationDto> result = medicationService.getAllMedications()
                 .stream().map(medicationMapper::toDto)
                 .collect(Collectors.toList());
 
@@ -57,7 +57,7 @@ public class MedicationController {
     )
     public ResponseEntity<MedicationDto> getMedicationById(@PathVariable("medication-id") @ValidMedication Long medicationId) {
 
-        MedicationDto result = medicationMapper.toDto(medicationService.getById(medicationId));
+        MedicationDto result = medicationMapper.toDto(medicationService.getMedicationById(medicationId));
 
         return ResponseEntity
                 .ok()
@@ -88,7 +88,7 @@ public class MedicationController {
     public ResponseEntity<MedicationDto> updateMedication(@PathVariable("medication-id") @ValidMedication Long medicationId,
                                                           @RequestBody @Valid ReqMedicationDto reqMedication) {
 
-        Medication medication = medicationService.getById(medicationId);
+        Medication medication = medicationService.getMedicationById(medicationId);
         Medication updatedMedication = medicationService.updateMedication(reqMedication, medication);
         MedicationDto result = medicationMapper.toDto(updatedMedication);
 

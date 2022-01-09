@@ -1,7 +1,6 @@
 package com.example.patients.model;
 
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -15,6 +14,9 @@ import static com.example.patients.dto.input.ReqAddressDto.STREET_REGEX;
 
 @Entity
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Address {
 
     @Id

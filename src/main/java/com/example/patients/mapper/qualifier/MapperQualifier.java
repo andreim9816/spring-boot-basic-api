@@ -32,13 +32,13 @@ public class MapperQualifier {
 
     @Named("idToAddress")
     public Address idToAddress(Long id) {
-        return addressService.getById(id);
+        return addressService.getAddressById(id);
     }
 
     @Named("idsToMedications")
     public List<Medication> idToMedications(List<Long> ids) {
         return ids.stream()
-                .map(medicationService::getById)
+                .map(medicationService::getMedicationById)
                 .collect(Collectors.toList());
     }
 }

@@ -22,11 +22,11 @@ public class MedicationService {
         this.medicationMapper = medicationMapper;
     }
 
-    public List<Medication> getAll() {
+    public List<Medication> getAllMedications() {
         return medicationRepository.findAll();
     }
 
-    public Medication getById(Long id) {
+    public Medication getMedicationById(Long id) {
         return medicationRepository.findById(id)
                 .orElseThrow(() -> EntityNotFoundException.builder()
                         .entityId(id)
