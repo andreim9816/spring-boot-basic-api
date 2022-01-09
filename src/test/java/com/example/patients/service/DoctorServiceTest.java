@@ -1,6 +1,8 @@
 package com.example.patients.service;
 
+import com.example.patients.dto.input.patch.ReqDoctorDtoPatch;
 import com.example.patients.exception.EntityNotFoundException;
+import com.example.patients.mapper.DoctorMapper;
 import com.example.patients.model.Doctor;
 import com.example.patients.repository.DoctorRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -22,6 +24,9 @@ class DoctorServiceTest {
 
     @Mock
     DoctorRepository doctorRepository;
+
+    @Mock
+    DoctorMapper doctorMapper;
 
     @InjectMocks
     DoctorService doctorService;
@@ -127,6 +132,47 @@ class DoctorServiceTest {
         assertEquals(doctorSaved.getId(), result.getId());
         assertEquals(doctorSaved.getFirstName(), result.getFirstName());
         assertEquals(doctorSaved.getLastName(), result.getLastName());
+    }
+
+    @Test
+    @DisplayName("Update doctor")
+    void updateDepartment() {
+        Long doctorId = 1L;
+        String firstName = "First name";
+        String lastName = "Last name";
+        String firstNameUpdated = "First name updated";
+        String lastNameUpdated = "Last name updated";
+
+        ReqDoctorDtoPatch reqDoctorDtoPatch = new ReqDoctorDtoPatch();
+        reqDoctorDtoPatch.setFirstName(firstNameUpdated);
+        reqDoctorDtoPatch.setLastName(lastNameUpdated);
+
+        Doctor doctorToBeUpdated = Doctor.builder()
+                .id(doctorId)
+                .firstName(firstName)
+                .lastName(lastName)
+                .build();
+
+        Doctor doctorUpdated = Doctor.builder()
+                .id(doctorId)
+                .firstName(firstNameUpdated)
+                .lastName(lastNameUpdated)
+                .build();
+
+        Doctor doctorSaved = Doctor.builder()
+                .id(doctorId)
+                .firstName(firstNameUpdated)
+                .lastName(lastNameUpdated)
+                .build();
+
+
+        when(doctorMapper.update(reqDoctorDtoPatch, doctorToBeUpdated)).thenReturn(doctorUpdated);
+
+        when(doctorRepository.save(any())).thenReturn(doctorSaved);
+
+        Doctor result = doctorService.updateDoctor(reqDoctorDtoPatch, doctorToBeUpdated);
+
+        assertEquals(doctorSaved, result);
     }
 
     @Test

@@ -1,6 +1,8 @@
 package com.example.patients.service;
 
+import com.example.patients.dto.input.patch.ReqPatientDtoPatch;
 import com.example.patients.exception.EntityNotFoundException;
+import com.example.patients.mapper.PatientMapper;
 import com.example.patients.model.Consult;
 import com.example.patients.model.Medication;
 import com.example.patients.model.Patient;
@@ -25,6 +27,9 @@ class PatientServiceTest {
 
     @Mock
     PatientRepository patientRepository;
+
+    @Mock
+    PatientMapper patientMapper;
 
     @InjectMocks
     PatientService patientService;
@@ -280,6 +285,16 @@ class PatientServiceTest {
     }
 
     @Test
+    @DisplayName("There is no hospitalized patient")
+    void getLongestHospitalizedPatientIsNull() {
+
+        when(patientRepository.findAll()).thenReturn(null);
+        Patient result = patientService.getLongestHospitalizedPatient();
+
+        assertNull(result);
+    }
+
+    @Test
     @DisplayName("Save patient")
     void savePatient() {
         Long patientId = 1L;
@@ -304,6 +319,47 @@ class PatientServiceTest {
         assertEquals(patientSaved.getId(), result.getId());
         assertEquals(patientSaved.getFirstName(), result.getFirstName());
         assertEquals(patientSaved.getLastName(), result.getLastName());
+    }
+
+    @Test
+    @DisplayName("Update patient")
+    void updateDepartment() {
+        Long patientId = 1L;
+        String firstName = "First name";
+        String lastName = "Last name";
+        String firstNameUpdated = "First name updated";
+        String lastNameUpdated = "Last name updated";
+
+        ReqPatientDtoPatch reqPatientDtoPatch = new ReqPatientDtoPatch();
+        reqPatientDtoPatch.setFirstName(firstNameUpdated);
+        reqPatientDtoPatch.setLastName(lastNameUpdated);
+
+        Patient patientToBeUpdated = Patient.builder()
+                .id(patientId)
+                .firstName(firstName)
+                .lastName(lastName)
+                .build();
+
+        Patient patientUpdated = Patient.builder()
+                .id(patientId)
+                .firstName(firstNameUpdated)
+                .lastName(lastNameUpdated)
+                .build();
+
+        Patient patientSaved = Patient.builder()
+                .id(patientId)
+                .firstName(firstNameUpdated)
+                .lastName(lastNameUpdated)
+                .build();
+
+
+        when(patientMapper.update(reqPatientDtoPatch, patientToBeUpdated)).thenReturn(patientUpdated);
+
+        when(patientRepository.save(any())).thenReturn(patientSaved);
+
+        Patient result = patientService.updatePatient(reqPatientDtoPatch, patientToBeUpdated);
+
+        assertEquals(patientSaved, result);
     }
 
     @Test

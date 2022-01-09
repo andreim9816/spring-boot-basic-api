@@ -17,7 +17,7 @@ public class GlobalExceptionAdvice {
     private static final String DEFAULT_MESSAGE = "Something went wrong. Please try again later!";
     private static final String BAD_REQUEST_MESSAGE = "Invalid parameters!";
 
-    @ExceptionHandler({EntityNotFoundException.class})
+    @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorBody> handle(EntityNotFoundException e) {
         return new ResponseEntity<>(
                 ErrorBody.builder()

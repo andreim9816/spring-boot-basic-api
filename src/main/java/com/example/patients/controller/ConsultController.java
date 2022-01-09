@@ -44,7 +44,7 @@ public class ConsultController {
     )
     public ResponseEntity<List<ConsultDto>> getAll() {
 
-        List<ConsultDto> result = consultService.getAll().stream()
+        List<ConsultDto> result = consultService.getAllConsults().stream()
                 .map(consultMapper::toDto)
                 .collect(Collectors.toList());
 
@@ -83,7 +83,7 @@ public class ConsultController {
     )
     public ResponseEntity<ConsultDto> getById(@PathVariable("consult-id") @ValidConsult Long consultId) {
 
-        ConsultDto result = consultMapper.toDto(consultService.getById(consultId));
+        ConsultDto result = consultMapper.toDto(consultService.getConsultById(consultId));
 
         return ResponseEntity
                 .ok()
@@ -115,7 +115,7 @@ public class ConsultController {
     public ResponseEntity<ConsultDto> updateConsult(@PathVariable("consult-id") @ValidConsult Long consultId,
                                                     @RequestBody @Valid ReqConsultDto reqConsult) {
 
-        Consult consult = consultService.getById(consultId);
+        Consult consult = consultService.getConsultById(consultId);
         Consult updatedConsult = consultService.updateConsult(reqConsult, consult);
         ConsultDto result = consultMapper.toDto(updatedConsult);
 

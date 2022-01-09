@@ -22,11 +22,11 @@ public class ConsultService {
         this.consultMapper = consultMapper;
     }
 
-    public List<Consult> getAll() {
+    public List<Consult> getAllConsults() {
         return consultRepository.findAll();
     }
 
-    public Consult getById(Long id) {
+    public Consult getConsultById(Long id) {
         return consultRepository.findById(id)
                 .orElseThrow(() -> EntityNotFoundException.builder()
                         .entityId(id)
