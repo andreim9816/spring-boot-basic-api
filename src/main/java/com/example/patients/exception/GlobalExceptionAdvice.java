@@ -37,7 +37,7 @@ public class GlobalExceptionAdvice {
                                 .build()
                         )
                         .collect(Collectors.toList()),
-                HttpStatus.BAD_REQUEST
+                HttpStatus.NOT_FOUND
         );
     }
 

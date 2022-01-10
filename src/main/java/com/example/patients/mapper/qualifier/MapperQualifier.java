@@ -9,6 +9,7 @@ import com.example.patients.service.MedicationService;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,8 +38,11 @@ public class MapperQualifier {
 
     @Named("idsToMedications")
     public List<Medication> idToMedications(List<Long> ids) {
-        return ids.stream()
-                .map(medicationService::getMedicationById)
-                .collect(Collectors.toList());
+        if (ids != null) {
+            return ids.stream()
+                    .map(medicationService::getMedicationById)
+                    .collect(Collectors.toList());
+        }
+        return new ArrayList<>();
     }
 }

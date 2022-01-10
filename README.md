@@ -72,8 +72,13 @@ For using the application, the requests can be executed via ```swagger``` by goi
 
 ### Testing
 
-Created unit tests for the services methods. Totally there are 57 written tests, all of them passing successfully with
-an average of **80%** line coverage (because sonarLint still has some bugs, otherwise the coverage would be 100%).
+Created ```unit tests``` for the ```services methods```. Totally there are ```57 unit tests```, all of them passing
+successfully with an average of ```80% line coverage``` (because sonarLint still has some bugs, otherwise the coverage
+would be 100%).
+<br>
+Created ```10 integration tests``` for ```Consult Controller``` which has ```100% coverage```. At the project level, the
+line coverage is about ```37%```
+<br>
 Tests can be run via IntelliJ interface or using the following command:
 <br>
 ```mvn test```
