@@ -51,7 +51,7 @@
 4. DTO objects for exposing the data (```@PatientDto```). Mapstruct mappers were used in order to map the entities to
    DTO objects
 5. JPQL queries (```@Query(...)```)
-6. Controller exception handling (```@ControllerAdvice````)
+6. Controller exception handling (```@ControllerAdvice```)
 
 ### Running the application
 
