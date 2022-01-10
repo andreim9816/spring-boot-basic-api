@@ -1,7 +1,6 @@
-package com.example.patients.service.constraint;
+package com.example.patients.constraint.annotation;
 
-import com.example.patients.service.validator.AddressNotTakenValidator;
-import com.example.patients.service.validator.AddressValidator;
+import com.example.patients.constraint.validator.AddressNotTakenValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

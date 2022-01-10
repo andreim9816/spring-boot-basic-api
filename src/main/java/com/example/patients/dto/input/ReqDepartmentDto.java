@@ -1,6 +1,6 @@
 package com.example.patients.dto.input;
 
-import com.example.patients.service.constraint.UniqueDepartmentName;
+import com.example.patients.constraint.annotation.UniqueDepartmentName;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;

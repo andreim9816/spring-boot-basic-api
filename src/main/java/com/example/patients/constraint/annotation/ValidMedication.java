@@ -1,7 +1,6 @@
-package com.example.patients.service.constraint;
+package com.example.patients.constraint.annotation;
 
-import com.example.patients.service.validator.ConsultValidator;
-import com.example.patients.service.validator.PatientValidator;
+import com.example.patients.constraint.validator.MedicationValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -9,11 +8,11 @@ import java.lang.annotation.*;
 
 @Target({ElementType.FIELD, ElementType.PARAMETER, ElementType.TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = ConsultValidator.class)
+@Constraint(validatedBy = MedicationValidator.class)
 @Documented
-public @interface ValidConsult {
+public @interface ValidMedication {
 
-    String message() default "Invalid consult ID!";
+    String message() default "Invalid medication ID!";
 
     Class<?>[] groups() default {};
 

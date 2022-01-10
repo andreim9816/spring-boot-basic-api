@@ -52,8 +52,10 @@ class DepartmentServiceTest {
 
         List<Department> result = departmentService.getAllDepartments();
 
-        assertEquals(result.get(0), department1);
-        assertEquals(result.get(1), department2);
+        assertEquals(result.get(0).getId(), department1.getId());
+        assertEquals(result.get(0).getName(), department1.getName());
+        assertEquals(result.get(1).getId(), department2.getId());
+        assertEquals(result.get(1).getName(), department2.getName());
     }
 
     @Test
@@ -69,7 +71,8 @@ class DepartmentServiceTest {
 
         Department result = departmentService.getDepartmentById(departmentId);
 
-        assertEquals(department, result);
+        assertEquals(department.getId(), result.getId());
+        assertEquals(department.getName(), result.getName());
     }
 
     @Test
@@ -130,8 +133,13 @@ class DepartmentServiceTest {
         List<Patient> result = departmentService.getAllPatientsInDepartment(departmentId);
 
         assertEquals(2, result.size());
-        assertEquals(result.get(0), patient1);
-        assertEquals(result.get(1), patient2);
+        assertEquals(result.get(0).getId(), patient1.getId());
+        assertEquals(result.get(0).getFirstName(), patient1.getFirstName());
+        assertEquals(result.get(0).getLastName(), patient1.getLastName());
+
+        assertEquals(result.get(1).getId(), patient2.getId());
+        assertEquals(result.get(1).getFirstName(), patient2.getFirstName());
+        assertEquals(result.get(1).getLastName(), patient2.getLastName());
     }
 
     @Test
@@ -167,8 +175,13 @@ class DepartmentServiceTest {
         List<Doctor> result = departmentService.getAllDoctorsInDepartment(departmentId);
 
         assertEquals(2, result.size());
-        assertEquals(result.get(0), doctor1);
-        assertEquals(result.get(1), doctor2);
+        assertEquals(result.get(0).getId(), doctor1.getId());
+        assertEquals(result.get(0).getFirstName(), doctor1.getFirstName());
+        assertEquals(result.get(0).getLastName(), doctor1.getLastName());
+
+        assertEquals(result.get(1).getId(), doctor2.getId());
+        assertEquals(result.get(1).getFirstName(), doctor2.getFirstName());
+        assertEquals(result.get(1).getLastName(), doctor2.getLastName());
     }
 
     @Test
@@ -187,7 +200,8 @@ class DepartmentServiceTest {
         Optional<Department> result = departmentService.getDepartmentByName(departmentName);
 
         assertTrue(result.isPresent());
-        assertEquals(department, result.get());
+        assertEquals(department.getId(), result.get().getId());
+        assertEquals(department.getName(), result.get().getName());
     }
 
     @Test
@@ -257,7 +271,8 @@ class DepartmentServiceTest {
 
         Department result = departmentService.updateDepartment(reqDepartmentDto, departmentToBeUpdated);
 
-        assertEquals(departmentSaved, result);
+        assertEquals(departmentSaved.getId(), result.getId());
+        assertEquals(departmentSaved.getName(), result.getName());
     }
 
     @Test

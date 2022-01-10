@@ -52,8 +52,15 @@ class AddressServiceTest {
 
         List<Address> result = addressService.getAllAddresses();
 
-        assertEquals(result.get(0), address1);
-        assertEquals(result.get(1), address2);
+        assertEquals(address1.getId(), result.get(0).getId());
+        assertEquals(address1.getNo(), result.get(0).getNo());
+        assertEquals(address1.getStreet(), result.get(0).getStreet());
+        assertEquals(address1.getCity(), result.get(0).getCity());
+
+        assertEquals(address2.getId(), result.get(1).getId());
+        assertEquals(address2.getNo(), result.get(1).getNo());
+        assertEquals(address2.getStreet(), result.get(1).getStreet());
+        assertEquals(address2.getCity(), result.get(1).getCity());
     }
 
     @Test
@@ -71,7 +78,10 @@ class AddressServiceTest {
 
         Address result = addressService.getAddressById(addressId);
 
-        assertEquals(address, result);
+        assertEquals(address.getId(), result.getId());
+        assertEquals(address.getNo(), result.getNo());
+        assertEquals(address.getStreet(), result.getStreet());
+        assertEquals(address.getCity(), result.getCity());
     }
 
 
@@ -201,7 +211,10 @@ class AddressServiceTest {
 
         Address result = addressService.updateAddress(reqAddressDto, addressToBeUpdated);
 
-        assertEquals(addressSaved, result);
+        assertEquals(addressSaved.getId(), result.getId());
+        assertEquals(addressSaved.getCity(), result.getCity());
+        assertEquals(addressSaved.getNo(), result.getNo());
+        assertEquals(addressSaved.getStreet(), result.getStreet());
     }
 
     @Test

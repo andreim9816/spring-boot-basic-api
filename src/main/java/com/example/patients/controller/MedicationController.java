@@ -1,11 +1,11 @@
 package com.example.patients.controller;
 
+import com.example.patients.constraint.annotation.ValidMedication;
 import com.example.patients.dto.MedicationDto;
 import com.example.patients.dto.input.ReqMedicationDto;
 import com.example.patients.mapper.MedicationMapper;
 import com.example.patients.model.Medication;
 import com.example.patients.service.MedicationService;
-import com.example.patients.service.constraint.ValidMedication;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;

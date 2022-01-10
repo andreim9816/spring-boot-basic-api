@@ -1,5 +1,6 @@
 package com.example.patients.controller;
 
+import com.example.patients.constraint.annotation.ValidDepartmentId;
 import com.example.patients.dto.DepartmentDto;
 import com.example.patients.dto.DoctorDto;
 import com.example.patients.dto.PatientDto;
@@ -9,7 +10,6 @@ import com.example.patients.mapper.DoctorMapper;
 import com.example.patients.mapper.PatientMapper;
 import com.example.patients.model.Department;
 import com.example.patients.service.DepartmentService;
-import com.example.patients.service.constraint.ValidDepartmentId;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;

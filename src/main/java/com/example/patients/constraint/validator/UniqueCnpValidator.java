@@ -1,7 +1,7 @@
-package com.example.patients.service.validator;
+package com.example.patients.constraint.validator;
 
+import com.example.patients.constraint.annotation.UniqueCnp;
 import com.example.patients.service.PatientService;
-import com.example.patients.service.constraint.UniqueCnp;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;

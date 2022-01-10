@@ -1,11 +1,11 @@
 package com.example.patients.controller;
 
+import com.example.patients.constraint.annotation.ValidAddress;
 import com.example.patients.dto.AddressDto;
 import com.example.patients.dto.input.ReqAddressDto;
 import com.example.patients.mapper.AddressMapper;
 import com.example.patients.model.Address;
 import com.example.patients.service.AddressService;
-import com.example.patients.service.constraint.ValidAddress;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;

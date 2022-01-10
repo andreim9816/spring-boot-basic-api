@@ -1,13 +1,13 @@
 package com.example.patients.controller;
 
+import com.example.patients.constraint.annotation.ValidConsult;
+import com.example.patients.constraint.annotation.ValidDoctor;
+import com.example.patients.constraint.annotation.ValidPatient;
 import com.example.patients.dto.ConsultDto;
 import com.example.patients.dto.input.ReqConsultDto;
 import com.example.patients.mapper.ConsultMapper;
 import com.example.patients.model.Consult;
 import com.example.patients.service.ConsultService;
-import com.example.patients.service.constraint.ValidConsult;
-import com.example.patients.service.constraint.ValidDoctor;
-import com.example.patients.service.constraint.ValidPatient;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;

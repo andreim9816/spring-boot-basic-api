@@ -36,19 +36,14 @@ public class Medication {
 
     @Override
     public boolean equals(Object o) {
-        if (o == this) {
-            return true;
-        }
-        if (!(o instanceof Medication)) {
-            return false;
-        }
-
-        return Objects.equals(id, ((Medication) o).id);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Medication that = (Medication) o;
+        return id.equals(that.id) && name.equals(that.name) && quantity.equals(that.quantity) && consults.equals(that.consults);
     }
 
     @Override
     public int hashCode() {
-        return (int) (quantity * id);
+        return Objects.hash(id, name, quantity, consults);
     }
-
 }

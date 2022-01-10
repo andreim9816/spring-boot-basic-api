@@ -1,7 +1,7 @@
-package com.example.patients.service.validator;
+package com.example.patients.constraint.validator;
 
+import com.example.patients.constraint.annotation.ValidAddressNotTaken;
 import com.example.patients.service.AddressService;
-import com.example.patients.service.constraint.ValidAddressNotTaken;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;

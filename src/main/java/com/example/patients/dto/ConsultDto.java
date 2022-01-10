@@ -1,6 +1,5 @@
 package com.example.patients.dto;
 
-import com.example.patients.model.Patient;
 import lombok.Data;
 
 import java.util.Date;

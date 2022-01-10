@@ -51,8 +51,13 @@ class MedicationServiceTest {
 
         List<Medication> result = medicationService.getAllMedications();
 
-        assertEquals(result.get(0), medication1);
-        assertEquals(result.get(1), medication2);
+        assertEquals(result.get(0).getId(), medication1.getId());
+        assertEquals(result.get(0).getName(), medication1.getName());
+        assertEquals(result.get(0).getQuantity(), medication1.getQuantity());
+
+        assertEquals(result.get(1).getId(), medication2.getId());
+        assertEquals(result.get(1).getName(), medication2.getName());
+        assertEquals(result.get(1).getQuantity(), medication2.getQuantity());
     }
 
     @Test
@@ -69,7 +74,9 @@ class MedicationServiceTest {
 
         Medication result = medicationService.getMedicationById(medicationId);
 
-        assertEquals(medication, result);
+        assertEquals(medication.getId(), result.getId());
+        assertEquals(medication.getName(), result.getName());
+        assertEquals(medication.getQuantity(), result.getQuantity());
     }
 
     @Test
@@ -152,7 +159,9 @@ class MedicationServiceTest {
 
         Medication result = medicationService.updateMedication(reqMedicationDto, medicationToBeUpdated);
 
-        assertEquals(medicationSaved, result);
+        assertEquals(medicationSaved.getId(), result.getId());
+        assertEquals(medicationSaved.getName(), result.getName());
+        assertEquals(medicationSaved.getQuantity(), result.getQuantity());
     }
 
     @Test
@@ -179,6 +188,7 @@ class MedicationServiceTest {
 
         assertEquals(medicationSaved.getId(), result.getId());
         assertEquals(medicationSaved.getName(), result.getName());
+        assertEquals(medicationSaved.getQuantity(), result.getQuantity());
     }
 
     @Test

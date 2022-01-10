@@ -1,6 +1,6 @@
-package com.example.patients.service.constraint;
+package com.example.patients.constraint.annotation;
 
-import com.example.patients.service.validator.UniqueCnpValidator;
+import com.example.patients.constraint.validator.UniqueCnpValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

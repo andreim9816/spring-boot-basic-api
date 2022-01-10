@@ -1,9 +1,9 @@
 package com.example.patients.dto.input;
 
+import com.example.patients.constraint.annotation.UniqueCnp;
+import com.example.patients.constraint.annotation.ValidAddress;
+import com.example.patients.constraint.annotation.ValidAddressNotTaken;
 import com.example.patients.dto.PersonDto;
-import com.example.patients.service.constraint.UniqueCnp;
-import com.example.patients.service.constraint.ValidAddress;
-import com.example.patients.service.constraint.ValidAddressNotTaken;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

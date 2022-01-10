@@ -2,8 +2,6 @@ package com.example.patients.dto;
 
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 public class PatientDto extends PersonDto {
 

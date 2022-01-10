@@ -44,7 +44,7 @@
 ### Backend logic
 
 1. Spring Boot Beans (```@RestController```, ```@Service```, ```@Repository```, ```@Autowired```, ```@Mock``` etc)
-2. All the relations between entities (```@OneToOne```, ```@OneToMany```, ```@ManyToOne```, ```@ManyToMany```) using
+2. All the relationships between entities (```@OneToOne```, ```@OneToMany```, ```@ManyToOne```, ```@ManyToMany```) using
    Foreign keys (```@JoinColumn(name = "FK_DOCTOR_ID")```)
 3. POJO validation (request objects and DB objects) using custom annotations (```@ValidDoctor```) and field
    validations (```@Length(min = 2, message = "Custom message")```)

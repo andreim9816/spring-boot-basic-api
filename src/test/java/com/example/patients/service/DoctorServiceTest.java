@@ -50,8 +50,13 @@ class DoctorServiceTest {
 
         List<Doctor> result = doctorService.getAllDoctors();
 
-        assertEquals(result.get(0), doctor1);
-        assertEquals(result.get(1), doctor2);
+        assertEquals(result.get(0).getId(), doctor1.getId());
+        assertEquals(result.get(0).getFirstName(), doctor1.getFirstName());
+        assertEquals(result.get(0).getLastName(), doctor1.getLastName());
+
+        assertEquals(result.get(1).getId(), doctor2.getId());
+        assertEquals(result.get(1).getFirstName(), doctor2.getFirstName());
+        assertEquals(result.get(1).getLastName(), doctor2.getLastName());
     }
 
     @Test
@@ -68,7 +73,9 @@ class DoctorServiceTest {
 
         Doctor result = doctorService.getById(doctorId);
 
-        assertEquals(doctor, result);
+        assertEquals(doctor.getId(), result.getId());
+        assertEquals(doctor.getFirstName(), result.getFirstName());
+        assertEquals(doctor.getLastName(), result.getLastName());
     }
 
     @Test
@@ -172,7 +179,9 @@ class DoctorServiceTest {
 
         Doctor result = doctorService.updateDoctor(reqDoctorDtoPatch, doctorToBeUpdated);
 
-        assertEquals(doctorSaved, result);
+        assertEquals(doctorSaved.getId(), result.getId());
+        assertEquals(doctorSaved.getFirstName(), result.getFirstName());
+        assertEquals(doctorSaved.getLastName(), result.getLastName());
     }
 
     @Test

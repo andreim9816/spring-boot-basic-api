@@ -1,9 +1,7 @@
 package com.example.patients.mapper;
 
 import com.example.patients.dto.MedicationDto;
-import com.example.patients.dto.input.ReqDepartmentDto;
 import com.example.patients.dto.input.ReqMedicationDto;
-import com.example.patients.model.Department;
 import com.example.patients.model.Medication;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;

@@ -53,8 +53,12 @@ class PatientServiceTest {
 
         List<Patient> result = patientService.getAllPatients();
 
-        assertEquals(result.get(0), patient1);
-        assertEquals(result.get(1), patient2);
+        assertEquals(result.get(0).getId(), patient1.getId());
+        assertEquals(result.get(0).getFirstName(), patient1.getFirstName());
+        assertEquals(result.get(0).getLastName(), patient1.getLastName());
+        assertEquals(result.get(1).getId(), patient2.getId());
+        assertEquals(result.get(1).getFirstName(), patient2.getFirstName());
+        assertEquals(result.get(1).getLastName(), patient2.getLastName());
     }
 
     @Test
@@ -71,7 +75,9 @@ class PatientServiceTest {
 
         Patient result = patientService.getPatientById(patientId);
 
-        assertEquals(patient, result);
+        assertEquals(result.getId(), patient.getId());
+        assertEquals(result.getFirstName(), patient.getFirstName());
+        assertEquals(result.getLastName(), patient.getLastName());
     }
 
 
@@ -155,9 +161,17 @@ class PatientServiceTest {
 
         List<Consult> result = patientService.getConsultsForPatient(patientId);
 
-        assertEquals(consult1, result.get(0));
-        assertEquals(consult2, result.get(1));
-        assertEquals(consult3, result.get(2));
+        assertEquals(consult1.getId(), result.get(0).getId());
+        assertEquals(consult1.getComment(), result.get(0).getComment());
+        assertEquals(consult1.getDiagnose(), result.get(0).getDiagnose());
+
+        assertEquals(consult2.getId(), result.get(1).getId());
+        assertEquals(consult2.getComment(), result.get(1).getComment());
+        assertEquals(consult2.getDiagnose(), result.get(1).getDiagnose());
+
+        assertEquals(consult3.getId(), result.get(2).getId());
+        assertEquals(consult3.getComment(), result.get(2).getComment());
+        assertEquals(consult3.getDiagnose(), result.get(2).getDiagnose());
     }
 
     @Test
@@ -218,10 +232,21 @@ class PatientServiceTest {
 
         List<Medication> result = patientService.getUniqueMedicationsForPatient(patient.getId());
 
-        assertEquals(result.get(0), medication1);
-        assertEquals(result.get(1), medication2);
-        assertEquals(result.get(2), medication3);
-        assertEquals(result.get(3), medication4);
+        assertEquals(result.get(0).getId(), medication1.getId());
+        assertEquals(result.get(0).getQuantity(), medication1.getQuantity());
+        assertEquals(result.get(0).getName(), medication1.getName());
+
+        assertEquals(result.get(1).getId(), medication2.getId());
+        assertEquals(result.get(1).getQuantity(), medication2.getQuantity());
+        assertEquals(result.get(1).getName(), medication2.getName());
+
+        assertEquals(result.get(2).getId(), medication3.getId());
+        assertEquals(result.get(2).getQuantity(), medication3.getQuantity());
+        assertEquals(result.get(2).getName(), medication3.getName());
+
+        assertEquals(result.get(3).getId(), medication4.getId());
+        assertEquals(result.get(3).getQuantity(), medication4.getQuantity());
+        assertEquals(result.get(3).getName(), medication4.getName());
     }
 
     @Test
@@ -281,7 +306,9 @@ class PatientServiceTest {
         when(patientRepository.findAll()).thenReturn(List.of(patient1, patient2, patient3));
         Patient result = patientService.getLongestHospitalizedPatient();
 
-        assertEquals(patient1, result);
+        assertEquals(patient1.getId(), result.getId());
+        assertEquals(patient1.getFirstName(), result.getFirstName());
+        assertEquals(patient1.getLastName(), result.getLastName());
     }
 
     @Test
@@ -359,7 +386,9 @@ class PatientServiceTest {
 
         Patient result = patientService.updatePatient(reqPatientDtoPatch, patientToBeUpdated);
 
-        assertEquals(patientSaved, result);
+        assertEquals(patientSaved.getId(), result.getId());
+        assertEquals(patientSaved.getFirstName(), result.getFirstName());
+        assertEquals(patientSaved.getLastName(), result.getLastName());
     }
 
     @Test

@@ -1,8 +1,8 @@
 package com.example.patients.dto.input;
 
-import com.example.patients.service.constraint.ValidDoctor;
-import com.example.patients.service.constraint.ValidMedication;
-import com.example.patients.service.constraint.ValidPatient;
+import com.example.patients.constraint.annotation.ValidDoctor;
+import com.example.patients.constraint.annotation.ValidMedication;
+import com.example.patients.constraint.annotation.ValidPatient;
 import lombok.Data;
 
 import java.util.List;

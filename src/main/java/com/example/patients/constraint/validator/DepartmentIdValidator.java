@@ -1,7 +1,7 @@
-package com.example.patients.service.validator;
+package com.example.patients.constraint.validator;
 
+import com.example.patients.constraint.annotation.ValidDepartmentId;
 import com.example.patients.service.DepartmentService;
-import com.example.patients.service.constraint.ValidDepartmentId;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;

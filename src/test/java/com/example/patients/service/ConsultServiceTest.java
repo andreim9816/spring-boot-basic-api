@@ -54,8 +54,13 @@ class ConsultServiceTest {
 
         List<Consult> result = consultService.getAllConsults();
 
-        assertEquals(result.get(0), consult1);
-        assertEquals(result.get(1), consult2);
+        assertEquals(consult1.getId(), result.get(0).getId());
+        assertEquals(consult1.getDiagnose(), result.get(0).getDiagnose());
+        assertEquals(consult1.getComment(), result.get(0).getComment());
+
+        assertEquals(consult2.getId(), result.get(1).getId());
+        assertEquals(consult2.getDiagnose(), result.get(1).getDiagnose());
+        assertEquals(consult2.getComment(), result.get(1).getComment());
     }
 
     @Test
@@ -74,7 +79,9 @@ class ConsultServiceTest {
 
         Consult result = consultService.getConsultById(consultId);
 
-        assertEquals(consult, result);
+        assertEquals(consult.getId(), result.getId());
+        assertEquals(consult.getComment(), result.getComment());
+        assertEquals(consult.getDiagnose(), result.getDiagnose());
     }
 
     @Test
@@ -126,8 +133,13 @@ class ConsultServiceTest {
 
         List<Consult> result = consultService.getAllConsultsForDoctorAndPatient(doctorId, patientId);
 
-        assertEquals(result.get(0), consult1);
-        assertEquals(result.get(1), consult2);
+        assertEquals(consult1.getId(), result.get(0).getId());
+        assertEquals(consult1.getComment(), result.get(0).getComment());
+        assertEquals(consult1.getDiagnose(), result.get(0).getDiagnose());
+
+        assertEquals(consult2.getId(), result.get(1).getId());
+        assertEquals(consult2.getComment(), result.get(1).getComment());
+        assertEquals(consult2.getDiagnose(), result.get(1).getDiagnose());
     }
 
     @Test
@@ -192,7 +204,9 @@ class ConsultServiceTest {
 
         Consult result = consultService.updateConsult(reqConsultDto, consultToBeUpdated);
 
-        assertEquals(consultSaved, result);
+        assertEquals(consultSaved.getId(), result.getId());
+        assertEquals(consultSaved.getComment(), result.getComment());
+        assertEquals(consultSaved.getDiagnose(), result.getDiagnose());
     }
 
     @Test
