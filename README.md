@@ -72,7 +72,7 @@ For using the application, the requests can be executed via ```swagger``` by goi
 
 ### Testing
 
-Created ```unit tests``` for the ```services methods```. Totally there are ```57 unit tests```, all of them passing
+Created ```unit tests``` for the ```services methods```. Totally there are ```59 unit tests```, all of them passing
 successfully with an average of ```80% line coverage``` (because sonarLint still has some bugs, otherwise the coverage
 would be 100%).
 <br>

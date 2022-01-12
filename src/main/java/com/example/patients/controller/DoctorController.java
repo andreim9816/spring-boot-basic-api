@@ -5,7 +5,7 @@ import com.example.patients.constraint.annotation.ValidDoctor;
 import com.example.patients.dto.ConsultDto;
 import com.example.patients.dto.DoctorDto;
 import com.example.patients.dto.input.ReqDoctorDto;
-import com.example.patients.dto.input.patch.ReqDoctorDtoPatch;
+import com.example.patients.dto.input.update.ReqDoctorUpdateDto;
 import com.example.patients.mapper.ConsultMapper;
 import com.example.patients.mapper.DoctorMapper;
 import com.example.patients.model.Doctor;
@@ -107,13 +107,13 @@ public class DoctorController {
                 .body(result);
     }
 
-    @PatchMapping("/{doctor-id}")
+    @PutMapping("/{doctor-id}")
     @Operation(
-            method = "PATCH",
+            method = "PUT",
             summary = "Update a doctor"
     )
     public ResponseEntity<DoctorDto> updateDoctor(@PathVariable("doctor-id") @ValidDoctor Long doctorId,
-                                                  @RequestBody @Valid ReqDoctorDtoPatch reqDoctor) {
+                                                  @RequestBody @Valid ReqDoctorUpdateDto reqDoctor) {
 
         Doctor doctor = doctorService.getById(doctorId);
         Doctor updatedDoctor = doctorService.updateDoctor(reqDoctor, doctor);

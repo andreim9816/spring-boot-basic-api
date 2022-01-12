@@ -1,4 +1,4 @@
-package com.example.patients.dto.input.patch;
+package com.example.patients.dto.input.update;
 
 import com.example.patients.constraint.annotation.ValidAddress;
 import com.example.patients.constraint.annotation.ValidDepartmentId;
@@ -12,7 +12,7 @@ import javax.validation.constraints.Pattern;
 import static com.example.patients.dto.input.ReqPatientDto.CNP_REGEX;
 
 @Data
-public class ReqPatientDtoPatch extends PersonDto {
+public class ReqPatientUpdateDto extends PersonDto {
 
     @ValidDepartmentId
     private Long departmentId;

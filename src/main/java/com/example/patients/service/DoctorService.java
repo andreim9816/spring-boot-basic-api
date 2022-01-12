@@ -1,6 +1,6 @@
 package com.example.patients.service;
 
-import com.example.patients.dto.input.patch.ReqDoctorDtoPatch;
+import com.example.patients.dto.input.update.ReqDoctorUpdateDto;
 import com.example.patients.exception.EntityNotFoundException;
 import com.example.patients.mapper.DoctorMapper;
 import com.example.patients.model.Doctor;
@@ -43,8 +43,8 @@ public class DoctorService {
         return doctorRepository.save(doctor);
     }
 
-    public Doctor updateDoctor(ReqDoctorDtoPatch reqDoctorDtoPatch, Doctor doctor) {
-        Doctor updatedDoctor = doctorMapper.update(reqDoctorDtoPatch, doctor);
+    public Doctor updateDoctor(ReqDoctorUpdateDto reqDoctorUpdateDto, Doctor doctor) {
+        Doctor updatedDoctor = doctorMapper.update(reqDoctorUpdateDto, doctor);
 
         return saveDoctor(updatedDoctor);
     }

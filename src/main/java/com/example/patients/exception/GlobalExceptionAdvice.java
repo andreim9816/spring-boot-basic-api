@@ -55,8 +55,8 @@ public class GlobalExceptionAdvice {
         );
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorBody> handle(IllegalArgumentException e) {
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<ErrorBody> handle(CustomException e) {
         return new ResponseEntity<>(
                 ErrorBody.builder()
                         .message(e.getMessage())

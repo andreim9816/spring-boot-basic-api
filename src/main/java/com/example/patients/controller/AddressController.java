@@ -80,9 +80,9 @@ public class AddressController {
                 .body(result);
     }
 
-    @PatchMapping("/{address-id}")
+    @PutMapping("/{address-id}")
     @Operation(
-            method = "PATCH",
+            method = "PUT",
             summary = "Update an address"
     )
     public ResponseEntity<AddressDto> updateAddress(@PathVariable("address-id") @ValidAddress Long addressId,

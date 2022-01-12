@@ -6,7 +6,7 @@ import com.example.patients.dto.ConsultDto;
 import com.example.patients.dto.MedicationDto;
 import com.example.patients.dto.PatientDto;
 import com.example.patients.dto.input.ReqPatientDto;
-import com.example.patients.dto.input.patch.ReqPatientDtoPatch;
+import com.example.patients.dto.input.update.ReqPatientUpdateDto;
 import com.example.patients.mapper.ConsultMapper;
 import com.example.patients.mapper.MedicationMapper;
 import com.example.patients.mapper.PatientMapper;
@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
@@ -151,31 +150,17 @@ public class PatientController {
                 .body(result);
     }
 
-    @PatchMapping("/{patient-id}")
+    @PutMapping("/{patient-id}")
     @Operation(
-            method = "PATCH",
+            method = "PUT",
             summary = "Update a patient"
     )
     public ResponseEntity<PatientDto> updatePatient(@PathVariable("patient-id") @ValidPatient Long patientId,
-                                                    @RequestBody @Valid ReqPatientDtoPatch reqPatient) {
+                                                    @RequestBody @Valid ReqPatientUpdateDto reqPatient) {
 
         Patient patient = patientService.getPatientById(patientId);
-
-        /* Check for uniqueness address at DB level */
-        if (!Objects.equals(reqPatient.getAddressId(), patient.getAddress().getId())
-                && Boolean.TRUE.equals(addressService.checkIfAddressIsTakenByPatient(patient.getAddress().getId()))) {
-            throw new IllegalArgumentException("Address already taken!");
-        }
-
-        /* Check for uniqueness of CNP */
-        if (!Objects.equals(reqPatient.getCnp(), patient.getCnp())
-                && Boolean.TRUE.equals(patientService.checkIfCnpExists(reqPatient.getCnp()))) {
-            throw new IllegalArgumentException("CNP already exists!");
-        }
-
         Patient updatedPatient = patientService.updatePatient(reqPatient, patient);
-        Patient savedPatient = patientService.savePatient(updatedPatient);
-        PatientDto result = patientMapper.toDto(savedPatient);
+        PatientDto result = patientMapper.toDto(updatedPatient);
 
         return ResponseEntity
                 .ok()

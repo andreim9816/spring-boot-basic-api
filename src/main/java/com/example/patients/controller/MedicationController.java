@@ -80,9 +80,9 @@ public class MedicationController {
                 .body(result);
     }
 
-    @PatchMapping("/{medication-id}")
+    @PutMapping("/{medication-id}")
     @Operation(
-            method = "PATCH",
+            method = "PUT",
             summary = "Update a medication"
     )
     public ResponseEntity<MedicationDto> updateMedication(@PathVariable("medication-id") @ValidMedication Long medicationId,

@@ -2,7 +2,7 @@ package com.example.patients.mapper;
 
 import com.example.patients.dto.PatientDto;
 import com.example.patients.dto.input.ReqPatientDto;
-import com.example.patients.dto.input.patch.ReqPatientDtoPatch;
+import com.example.patients.dto.input.update.ReqPatientUpdateDto;
 import com.example.patients.mapper.qualifier.MapperQualifier;
 import com.example.patients.model.Patient;
 import org.mapstruct.Mapper;
@@ -24,5 +24,5 @@ public interface PatientMapper {
 
     @Mapping(source = "departmentId", target = "department", qualifiedByName = "idToDepartment")
     @Mapping(source = "addressId", target = "address", qualifiedByName = "idToAddress")
-    Patient update(ReqPatientDtoPatch req, @MappingTarget Patient entity);
+    Patient update(ReqPatientUpdateDto req, @MappingTarget Patient entity);
 }

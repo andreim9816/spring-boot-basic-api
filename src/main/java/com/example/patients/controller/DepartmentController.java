@@ -120,9 +120,9 @@ public class DepartmentController {
                 .body(result);
     }
 
-    @PatchMapping("/{department-id}")
+    @PutMapping("/{department-id}")
     @Operation(
-            method = "PATCH",
+            method = "PUT",
             summary = "Update a department"
     )
     public ResponseEntity<DepartmentDto> updateDepartment(@PathVariable("department-id") @ValidDepartmentId Long departmentId,

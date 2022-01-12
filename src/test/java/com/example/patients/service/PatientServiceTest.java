@@ -1,8 +1,10 @@
 package com.example.patients.service;
 
-import com.example.patients.dto.input.patch.ReqPatientDtoPatch;
+import com.example.patients.dto.input.update.ReqPatientUpdateDto;
+import com.example.patients.exception.CustomException;
 import com.example.patients.exception.EntityNotFoundException;
 import com.example.patients.mapper.PatientMapper;
+import com.example.patients.model.Address;
 import com.example.patients.model.Consult;
 import com.example.patients.model.Medication;
 import com.example.patients.model.Patient;
@@ -24,6 +26,9 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PatientServiceTest {
+
+    @Mock
+    AddressService addressService;
 
     @Mock
     PatientRepository patientRepository;
@@ -357,38 +362,100 @@ class PatientServiceTest {
         String firstNameUpdated = "First name updated";
         String lastNameUpdated = "Last name updated";
 
-        ReqPatientDtoPatch reqPatientDtoPatch = new ReqPatientDtoPatch();
-        reqPatientDtoPatch.setFirstName(firstNameUpdated);
-        reqPatientDtoPatch.setLastName(lastNameUpdated);
+        Long addressId = 10L;
+        Address address = new Address();
+        address.setId(addressId);
+
+        ReqPatientUpdateDto reqPatientUpdateDto = new ReqPatientUpdateDto();
+        reqPatientUpdateDto.setAddressId(addressId);
+        reqPatientUpdateDto.setFirstName(firstNameUpdated);
+        reqPatientUpdateDto.setLastName(lastNameUpdated);
 
         Patient patientToBeUpdated = Patient.builder()
                 .id(patientId)
                 .firstName(firstName)
                 .lastName(lastName)
+                .address(address)
                 .build();
 
         Patient patientUpdated = Patient.builder()
                 .id(patientId)
                 .firstName(firstNameUpdated)
                 .lastName(lastNameUpdated)
+                .address(address)
                 .build();
 
         Patient patientSaved = Patient.builder()
                 .id(patientId)
                 .firstName(firstNameUpdated)
                 .lastName(lastNameUpdated)
+                .address(address)
                 .build();
 
-
-        when(patientMapper.update(reqPatientDtoPatch, patientToBeUpdated)).thenReturn(patientUpdated);
-
+//        when(addressService.checkIfAddressIsTakenByPatient(addressId)).thenReturn(false);
+//        when(patientRepository.getByCnp(anyString())).thenReturn(null);
+        when(patientMapper.update(reqPatientUpdateDto, patientToBeUpdated)).thenReturn(patientUpdated);
         when(patientRepository.save(any())).thenReturn(patientSaved);
 
-        Patient result = patientService.updatePatient(reqPatientDtoPatch, patientToBeUpdated);
+        Patient result = patientService.updatePatient(reqPatientUpdateDto, patientToBeUpdated);
 
         assertEquals(patientSaved.getId(), result.getId());
         assertEquals(patientSaved.getFirstName(), result.getFirstName());
         assertEquals(patientSaved.getLastName(), result.getLastName());
+    }
+
+    @Test
+    @DisplayName("Update patient fails for address uniqueness")
+    void updateDepartmentFailsAtAddressCheck() {
+        Long patientId = 1L;
+
+        Long addressId = 10L;
+        Long newAddressId = 11L;
+        Address address = new Address();
+        address.setId(addressId);
+
+        ReqPatientUpdateDto reqPatientUpdateDto = new ReqPatientUpdateDto();
+        reqPatientUpdateDto.setAddressId(newAddressId);
+
+        Patient patientToBeUpdated = Patient.builder()
+                .id(patientId)
+                .address(address)
+                .build();
+
+        when(addressService.checkIfAddressIsTakenByPatient(newAddressId)).thenReturn(true);
+
+        CustomException exception = assertThrows(CustomException.class, () -> patientService.updatePatient(reqPatientUpdateDto, patientToBeUpdated));
+
+        assertEquals(String.format("Address with id %s already taken!", newAddressId), exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Update patient fails for CNP uniqueness")
+    void updateDepartmentFailsAtCNPCheck() {
+        Long patientId = 1L;
+
+        String cnp = "1981127262626";
+        String newCnp = "1234567890122";
+
+        Long addressId = 10L;
+        Address address = new Address();
+        address.setId(addressId);
+
+        ReqPatientUpdateDto reqPatientUpdateDto = new ReqPatientUpdateDto();
+        reqPatientUpdateDto.setCnp(newCnp);
+        reqPatientUpdateDto.setAddressId(addressId);
+
+        Patient patientToBeUpdated = Patient.builder()
+                .id(patientId)
+                .cnp(cnp)
+                .address(address)
+                .build();
+
+        when(patientRepository.getByCnp(newCnp)).thenReturn(Patient.builder().build());
+
+        CustomException exception = assertThrows(CustomException.class, () -> patientService.updatePatient(reqPatientUpdateDto, patientToBeUpdated));
+
+        assertEquals(String.format("CNP %s already taken!", newCnp), exception.getMessage());
     }
 
     @Test

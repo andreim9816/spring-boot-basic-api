@@ -281,7 +281,7 @@ class ConsultControllerIT {
         when(patientService.checkIfPatientExists(newPatientId)).thenReturn(true);
         when(consultService.updateConsult(request, consult1)).thenReturn(result);
 
-        mockMvc.perform(patch("/consults/{consult-id}", consult1.getId())
+        mockMvc.perform(put("/consults/{consult-id}", consult1.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())

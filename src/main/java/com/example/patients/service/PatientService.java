@@ -1,6 +1,7 @@
 package com.example.patients.service;
 
-import com.example.patients.dto.input.patch.ReqPatientDtoPatch;
+import com.example.patients.dto.input.update.ReqPatientUpdateDto;
+import com.example.patients.exception.CustomException;
 import com.example.patients.exception.EntityNotFoundException;
 import com.example.patients.mapper.PatientMapper;
 import com.example.patients.model.Consult;
@@ -13,16 +14,19 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
 public class PatientService {
 
+    private final AddressService addressService;
     private final PatientRepository patientRepository;
     private final PatientMapper patientMapper;
 
     @Autowired
-    public PatientService(PatientRepository patientRepository, PatientMapper patientMapper) {
+    public PatientService(AddressService addressService, PatientRepository patientRepository, PatientMapper patientMapper) {
+        this.addressService = addressService;
         this.patientRepository = patientRepository;
         this.patientMapper = patientMapper;
     }
@@ -85,7 +89,20 @@ public class PatientService {
         return patientRepository.save(patient);
     }
 
-    public Patient updatePatient(ReqPatientDtoPatch reqPatientDto, Patient patient) {
+    public Patient updatePatient(ReqPatientUpdateDto reqPatientDto, Patient patient) {
+
+        /* Check for uniqueness address at DB level */
+        if (!Objects.equals(reqPatientDto.getAddressId(), patient.getAddress().getId())
+                && Boolean.TRUE.equals(addressService.checkIfAddressIsTakenByPatient(reqPatientDto.getAddressId()))) {
+            throw new CustomException(String.format("Address with id %s already taken!", reqPatientDto.getAddressId()));
+        }
+
+        /* Check for uniqueness of CNP */
+        if (!Objects.equals(reqPatientDto.getCnp(), patient.getCnp())
+                && Boolean.TRUE.equals(checkIfCnpExists(reqPatientDto.getCnp()))) {
+            throw new CustomException(String.format("CNP %s already taken!", reqPatientDto.getCnp()));
+        }
+
         Patient updatedPatient = patientMapper.update(reqPatientDto, patient);
 
         return savePatient(updatedPatient);

@@ -1,6 +1,6 @@
 package com.example.patients.service;
 
-import com.example.patients.dto.input.patch.ReqDoctorDtoPatch;
+import com.example.patients.dto.input.update.ReqDoctorUpdateDto;
 import com.example.patients.exception.EntityNotFoundException;
 import com.example.patients.mapper.DoctorMapper;
 import com.example.patients.model.Doctor;
@@ -150,9 +150,9 @@ class DoctorServiceTest {
         String firstNameUpdated = "First name updated";
         String lastNameUpdated = "Last name updated";
 
-        ReqDoctorDtoPatch reqDoctorDtoPatch = new ReqDoctorDtoPatch();
-        reqDoctorDtoPatch.setFirstName(firstNameUpdated);
-        reqDoctorDtoPatch.setLastName(lastNameUpdated);
+        ReqDoctorUpdateDto reqDoctorUpdateDto = new ReqDoctorUpdateDto();
+        reqDoctorUpdateDto.setFirstName(firstNameUpdated);
+        reqDoctorUpdateDto.setLastName(lastNameUpdated);
 
         Doctor doctorToBeUpdated = Doctor.builder()
                 .id(doctorId)
@@ -173,11 +173,10 @@ class DoctorServiceTest {
                 .build();
 
 
-        when(doctorMapper.update(reqDoctorDtoPatch, doctorToBeUpdated)).thenReturn(doctorUpdated);
-
+        when(doctorMapper.update(reqDoctorUpdateDto, doctorToBeUpdated)).thenReturn(doctorUpdated);
         when(doctorRepository.save(any())).thenReturn(doctorSaved);
 
-        Doctor result = doctorService.updateDoctor(reqDoctorDtoPatch, doctorToBeUpdated);
+        Doctor result = doctorService.updateDoctor(reqDoctorUpdateDto, doctorToBeUpdated);
 
         assertEquals(doctorSaved.getId(), result.getId());
         assertEquals(doctorSaved.getFirstName(), result.getFirstName());

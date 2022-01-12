@@ -107,9 +107,9 @@ public class ConsultController {
 
     }
 
-    @PatchMapping("/{consult-id}")
+    @PutMapping("/{consult-id}")
     @Operation(
-            method = "PATCH",
+            method = "PUT",
             summary = "Update a consult"
     )
     public ResponseEntity<ConsultDto> updateConsult(@PathVariable("consult-id") @ValidConsult Long consultId,
