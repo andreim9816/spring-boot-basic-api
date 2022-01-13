@@ -31,7 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ComponentScan(basePackageClasses = {ConsultMapper.class})
 class ConsultControllerIT {
 
-    private static Consult consult1, consult2;
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -50,6 +49,8 @@ class ConsultControllerIT {
     private DoctorService doctorService;
     @MockBean
     private PatientService patientService;
+
+    private static Consult consult1, consult2;
 
     @BeforeAll
     static void createConsultObject() {
@@ -140,22 +141,25 @@ class ConsultControllerIT {
         Long doctorId = consult1.getDoctor().getId();
 
         when(doctorService.checkIfDoctorExists(doctorId)).thenReturn(true);
+        when(patientService.checkIfPatientExists(doctorId)).thenReturn(false);
         when(consultService.getAllConsultsForDoctorAndPatient(doctorId, patientId)).thenReturn(Arrays.asList(consult1, consult2));
 
         mockMvc.perform(get("/consults/filtered")
                         .contentType(MediaType.APPLICATION_JSON)
                         .param("doctorId", String.valueOf(doctorId))
                         .param("patientId", String.valueOf(patientId)))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$[0].message").value("Invalid patient ID!"));
     }
 
     @Test
     @DisplayName("Get all consults for doctor and patient fails at doctor validation")
-    void getAllConsultsForDoctorAndPatient_DoctorFailure() throws Exception {
+    void getAllConsultsForDoctorAndPatientDoctorFail() throws Exception {
 
         Long patientId = consult1.getPatient().getId();
         Long doctorId = consult1.getDoctor().getId();
 
+        when(doctorService.checkIfDoctorExists(doctorId)).thenReturn(false);
         when(patientService.checkIfPatientExists(patientId)).thenReturn(true);
         when(consultService.getAllConsultsForDoctorAndPatient(doctorId, patientId)).thenReturn(Arrays.asList(consult1, consult2));
 
@@ -163,7 +167,8 @@ class ConsultControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .param("doctorId", String.valueOf(doctorId))
                         .param("patientId", String.valueOf(patientId)))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$[0].message").value("Invalid doctor ID!"));
     }
 
     @Test
@@ -188,12 +193,12 @@ class ConsultControllerIT {
 
     @Test
     @DisplayName("Get consult by ID fails at validation")
-    void getConsultById_Failure() throws Exception {
-        when(consultService.getConsultById(consult1.getId())).thenReturn(consult1);
+    void getConsultByIdFail() throws Exception {
+        when(consultService.checkIfConsultExists(consult1.getId())).thenReturn(false);
 
-        mockMvc.perform(get("/consults/{consult-id}", consult1.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+        mockMvc.perform(get("/consults/{consult-id}", consult1.getId()))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$[0].message").value("Invalid consult ID!"));
     }
 
     @Test
@@ -306,13 +311,12 @@ class ConsultControllerIT {
 
     @Test
     @DisplayName("Delete consult fails at validation")
-    void deleteConsult_Fail() throws Exception {
+    void deleteConsultFail() throws Exception {
 
-        when(consultService.checkIfConsultExists(consult1.getId())).thenReturn(true);
-        doNothing().when(consultService).deleteConsultById(consult1.getId());
+        when(consultService.checkIfConsultExists(consult1.getId())).thenReturn(false);
 
-        mockMvc.perform(delete("/consults/{consult-id}", consult1.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
+        mockMvc.perform(delete("/consults/{consult-id}", consult1.getId()))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$[0].message").value("Invalid consult ID!"));
     }
 }
