@@ -1,6 +1,7 @@
 package com.example.patients.service;
 
 import com.example.patients.dto.input.ReqMedicationDto;
+import com.example.patients.exception.CustomException;
 import com.example.patients.exception.EntityNotFoundException;
 import com.example.patients.mapper.MedicationMapper;
 import com.example.patients.model.Medication;
@@ -39,8 +40,9 @@ public class MedicationService {
         return medicationRepository.findById(id).isPresent();
     }
 
-    public Medication saveMedication(Medication doctor) {
-        return medicationRepository.save(doctor);
+    public Medication saveMedication(Medication medication) {
+        checkIfMedicationAlreadyExistsByNameAndQuantity(medication.getName(), medication.getQuantity());
+        return medicationRepository.save(medication);
     }
 
     public Medication updateMedication(ReqMedicationDto reqMedicationDto, Medication medication) {
@@ -51,5 +53,11 @@ public class MedicationService {
 
     public void deleteMedicationById(Long id) {
         medicationRepository.deleteById(id);
+    }
+
+    private void checkIfMedicationAlreadyExistsByNameAndQuantity(String name, Integer quantity) {
+        if (medicationRepository.findMedicationByNameAndQuantity(name, quantity) != null) {
+            throw new CustomException(String.format("Medication %s with quantity %s already exists!", name, quantity));
+        }
     }
 }

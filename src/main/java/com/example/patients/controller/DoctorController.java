@@ -62,8 +62,7 @@ public class DoctorController {
             method = "GET",
             summary = "Get all consultations for a doctor"
     )
-    public ResponseEntity<List<ConsultDto>> getAllConsultsOfDoctor(
-            @PathVariable("doctor-id") @ValidDoctor Long doctorId) {
+    public ResponseEntity<List<ConsultDto>> getAllConsultsOfDoctor(@PathVariable("doctor-id") Long doctorId) {
 
         List<ConsultDto> result = doctorService.getById(doctorId)
                 .getConsults()
@@ -81,7 +80,7 @@ public class DoctorController {
             method = "GET",
             summary = "Get a doctor by ID"
     )
-    public ResponseEntity<DoctorDto> getDoctorById(@PathVariable("doctor-id") @ValidDoctor Long doctorId) {
+    public ResponseEntity<DoctorDto> getDoctorById(@PathVariable("doctor-id") Long doctorId) {
 
         DoctorDto result = doctorMapper.toDto(doctorService.getById(doctorId));
 
@@ -112,7 +111,7 @@ public class DoctorController {
             method = "PUT",
             summary = "Update a doctor"
     )
-    public ResponseEntity<DoctorDto> updateDoctor(@PathVariable("doctor-id") @ValidDoctor Long doctorId,
+    public ResponseEntity<DoctorDto> updateDoctor(@PathVariable("doctor-id") Long doctorId,
                                                   @RequestBody @Valid ReqDoctorUpdateDto reqDoctor) {
 
         Doctor doctor = doctorService.getById(doctorId);

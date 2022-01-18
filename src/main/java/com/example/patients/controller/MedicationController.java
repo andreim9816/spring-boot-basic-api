@@ -55,7 +55,7 @@ public class MedicationController {
             method = "GET",
             summary = "Get a medication by ID"
     )
-    public ResponseEntity<MedicationDto> getMedicationById(@PathVariable("medication-id") @ValidMedication Long medicationId) {
+    public ResponseEntity<MedicationDto> getMedicationById(@PathVariable("medication-id") Long medicationId) {
 
         MedicationDto result = medicationMapper.toDto(medicationService.getMedicationById(medicationId));
 
@@ -85,7 +85,7 @@ public class MedicationController {
             method = "PUT",
             summary = "Update a medication"
     )
-    public ResponseEntity<MedicationDto> updateMedication(@PathVariable("medication-id") @ValidMedication Long medicationId,
+    public ResponseEntity<MedicationDto> updateMedication(@PathVariable("medication-id") Long medicationId,
                                                           @RequestBody @Valid ReqMedicationDto reqMedication) {
 
         Medication medication = medicationService.getMedicationById(medicationId);

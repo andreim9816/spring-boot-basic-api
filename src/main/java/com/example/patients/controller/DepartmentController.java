@@ -95,7 +95,7 @@ public class DepartmentController {
             method = "GET",
             summary = "Get a department by ID"
     )
-    public ResponseEntity<DepartmentDto> getDepartmentById(@PathVariable("department-id") @ValidDepartmentId Long id) {
+    public ResponseEntity<DepartmentDto> getDepartmentById(@PathVariable("department-id") Long id) {
 
         DepartmentDto result = departmentMapper.toDto(departmentService.getDepartmentById(id));
 
@@ -125,7 +125,7 @@ public class DepartmentController {
             method = "PUT",
             summary = "Update a department"
     )
-    public ResponseEntity<DepartmentDto> updateDepartment(@PathVariable("department-id") @ValidDepartmentId Long departmentId,
+    public ResponseEntity<DepartmentDto> updateDepartment(@PathVariable("department-id") Long departmentId,
                                                           @RequestBody @Valid ReqDepartmentDto reqDepartment) {
 
         Department department = departmentService.getDepartmentById(departmentId);

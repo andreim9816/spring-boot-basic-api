@@ -1,6 +1,5 @@
 package com.example.patients.controller;
 
-import com.example.patients.constraint.annotation.ValidDepartmentId;
 import com.example.patients.constraint.annotation.ValidPatient;
 import com.example.patients.dto.ConsultDto;
 import com.example.patients.dto.MedicationDto;
@@ -69,7 +68,7 @@ public class PatientController {
             method = "GET",
             summary = "Get all consultations for a patient"
     )
-    public ResponseEntity<List<ConsultDto>> getAllConsultationForPatient(@PathVariable("patient-id") @ValidPatient Long patientId) {
+    public ResponseEntity<List<ConsultDto>> getAllConsultationForPatient(@PathVariable("patient-id") Long patientId) {
 
         List<ConsultDto> result = patientService.getPatientById(patientId)
                 .getConsults()
@@ -87,7 +86,7 @@ public class PatientController {
             method = "GET",
             summary = "Get a patient by ID"
     )
-    public ResponseEntity<PatientDto> getPatientById(@PathVariable("patient-id") @ValidPatient Long patientId) {
+    public ResponseEntity<PatientDto> getPatientById(@PathVariable("patient-id") Long patientId) {
 
         PatientDto result = patientMapper.toDto(patientService.getPatientById(patientId));
 
@@ -110,11 +109,10 @@ public class PatientController {
             return ResponseEntity
                     .ok()
                     .body(result);
-        } else {
-            return ResponseEntity
-                    .noContent()
-                    .build();
         }
+        return ResponseEntity
+                .noContent()
+                .build();
     }
 
     @GetMapping("/{patient-id}/medications")
@@ -122,7 +120,7 @@ public class PatientController {
             method = "GET",
             summary = "Get all medications administrated to a patient"
     )
-    public ResponseEntity<List<MedicationDto>> getMedicationsForPatient(@PathVariable("patient-id") @ValidPatient Long patientId) {
+    public ResponseEntity<List<MedicationDto>> getMedicationsForPatient(@PathVariable("patient-id") Long patientId) {
 
         List<MedicationDto> medications = patientService.getUniqueMedicationsForPatient(patientId).stream()
                 .map(medicationMapper::toDto)
@@ -138,7 +136,7 @@ public class PatientController {
             method = "POST",
             summary = "Save a new patient"
     )
-    public ResponseEntity<PatientDto> savePatient(@PathVariable("department-id") @ValidDepartmentId Long departmentId,
+    public ResponseEntity<PatientDto> savePatient(@PathVariable("department-id") Long departmentId,
                                                   @RequestBody @Valid ReqPatientDto reqPatient) {
 
         Patient patient = patientMapper.toEntityForCreate(departmentId, reqPatient);
@@ -155,7 +153,7 @@ public class PatientController {
             method = "PUT",
             summary = "Update a patient"
     )
-    public ResponseEntity<PatientDto> updatePatient(@PathVariable("patient-id") @ValidPatient Long patientId,
+    public ResponseEntity<PatientDto> updatePatient(@PathVariable("patient-id") Long patientId,
                                                     @RequestBody @Valid ReqPatientUpdateDto reqPatient) {
 
         Patient patient = patientService.getPatientById(patientId);

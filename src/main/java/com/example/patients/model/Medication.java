@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,7 +24,7 @@ public class Medication {
     @NotBlank(message = "Medication name must be provided!")
     private String name;
 
-    @NotBlank(message = "Quantity must be provided!")
+    @NotNull(message = "Quantity must be provided!")
     @Min(value = 1, message = "Quantity must be positive!")
     private Integer quantity;
 

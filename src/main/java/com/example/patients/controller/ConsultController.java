@@ -81,7 +81,7 @@ public class ConsultController {
             method = "GET",
             summary = "Get a consult by ID"
     )
-    public ResponseEntity<ConsultDto> getById(@PathVariable("consult-id") @ValidConsult Long consultId) {
+    public ResponseEntity<ConsultDto> getById(@PathVariable("consult-id") Long consultId) {
 
         ConsultDto result = consultMapper.toDto(consultService.getConsultById(consultId));
 
@@ -112,7 +112,7 @@ public class ConsultController {
             method = "PUT",
             summary = "Update a consult"
     )
-    public ResponseEntity<ConsultDto> updateConsult(@PathVariable("consult-id") @ValidConsult Long consultId,
+    public ResponseEntity<ConsultDto> updateConsult(@PathVariable("consult-id") Long consultId,
                                                     @RequestBody @Valid ReqConsultDto reqConsult) {
 
         Consult consult = consultService.getConsultById(consultId);

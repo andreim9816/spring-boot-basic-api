@@ -8,6 +8,7 @@ import com.example.patients.repository.ConsultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -49,8 +50,9 @@ public class ConsultService {
         return saveConsult(upadatedConsult);
     }
 
-    public Consult saveConsult(Consult department) {
-        return consultRepository.save(department);
+    public Consult saveConsult(Consult consult) {
+        consult.setDate(new Date());
+        return consultRepository.save(consult);
     }
 
     public void deleteConsultById(Long id) {

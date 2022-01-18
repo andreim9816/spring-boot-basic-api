@@ -55,7 +55,7 @@ public class AddressController {
             method = "GET",
             summary = "Get an address by ID"
     )
-    public ResponseEntity<AddressDto> getById(@PathVariable("address-id") @ValidAddress Long addressId) {
+    public ResponseEntity<AddressDto> getById(@PathVariable("address-id") Long addressId) {
 
         AddressDto result = addressMapper.toDto(addressService.getAddressById(addressId));
 
@@ -85,7 +85,7 @@ public class AddressController {
             method = "PUT",
             summary = "Update an address"
     )
-    public ResponseEntity<AddressDto> updateAddress(@PathVariable("address-id") @ValidAddress Long addressId,
+    public ResponseEntity<AddressDto> updateAddress(@PathVariable("address-id") Long addressId,
                                                     @RequestBody @Valid ReqAddressDto reqAddress) {
 
         Address address = addressService.getAddressById(addressId);

@@ -68,6 +68,7 @@ public class PatientService {
             return getAllPatients().stream()
                     .map(this::getConsultsForPatient)
                     .flatMap(Collection::stream)
+                    .filter(consult -> consult != null && consult.getDate() != null)
                     .min(Comparator.comparing(Consult::getDate))
                     .map(Consult::getPatient)
                     .orElse(null);
