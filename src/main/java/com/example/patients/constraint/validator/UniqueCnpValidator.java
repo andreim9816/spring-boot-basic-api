@@ -19,6 +19,9 @@ public class UniqueCnpValidator implements ConstraintValidator<UniqueCnp, String
 
     @Override
     public boolean isValid(String cnp, ConstraintValidatorContext constraintValidatorContext) {
+        if (cnp == null) {
+            return false;
+        }
         return !patientService.checkIfCnpExists(cnp);
     }
 }

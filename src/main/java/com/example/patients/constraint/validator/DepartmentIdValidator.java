@@ -18,6 +18,9 @@ public class DepartmentIdValidator implements ConstraintValidator<ValidDepartmen
 
     @Override
     public boolean isValid(Long departmentId, ConstraintValidatorContext constraintValidatorContext) {
+        if (departmentId == null) {
+            return false;
+        }
         return departmentService.checkIfDepartmentExists(departmentId);
     }
 }

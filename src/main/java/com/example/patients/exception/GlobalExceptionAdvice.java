@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,6 +61,16 @@ public class GlobalExceptionAdvice {
         return new ResponseEntity<>(
                 ErrorBody.builder()
                         .message(e.getMessage())
+                        .build(),
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<ErrorBody> handle(ValidationException e) {
+        return new ResponseEntity<>(
+                ErrorBody.builder()
+                        .message(BAD_REQUEST_MESSAGE)
                         .build(),
                 HttpStatus.BAD_REQUEST
         );

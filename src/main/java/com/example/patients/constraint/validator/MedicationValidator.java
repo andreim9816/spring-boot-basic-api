@@ -18,6 +18,9 @@ public class MedicationValidator implements ConstraintValidator<ValidMedication,
 
     @Override
     public boolean isValid(Long medicationId, ConstraintValidatorContext constraintValidatorContext) {
+        if (medicationId == null) {
+            return false;
+        }
         return medicationService.checkIfMedicationExists(medicationId);
     }
 }

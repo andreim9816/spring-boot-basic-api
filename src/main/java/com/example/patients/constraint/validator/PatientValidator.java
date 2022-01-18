@@ -18,6 +18,9 @@ public class PatientValidator implements ConstraintValidator<ValidPatient, Long>
 
     @Override
     public boolean isValid(Long patientId, ConstraintValidatorContext constraintValidatorContext) {
+        if (patientId == null) {
+            return false;
+        }
         return patientService.checkIfPatientExists(patientId);
     }
 }

@@ -18,6 +18,9 @@ public class ConsultValidator implements ConstraintValidator<ValidConsult, Long>
 
     @Override
     public boolean isValid(Long consultId, ConstraintValidatorContext constraintValidatorContext) {
+        if (consultId == null) {
+            return false;
+        }
         return consultService.checkIfConsultExists(consultId);
     }
 }

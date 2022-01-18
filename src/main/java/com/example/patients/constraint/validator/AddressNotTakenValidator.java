@@ -18,6 +18,9 @@ public class AddressNotTakenValidator implements ConstraintValidator<ValidAddres
 
     @Override
     public boolean isValid(Long addressId, ConstraintValidatorContext constraintValidatorContext) {
+        if (addressId == null) {
+            return false;
+        }
         return !addressService.checkIfAddressIsTakenByPatient(addressId);
     }
 }

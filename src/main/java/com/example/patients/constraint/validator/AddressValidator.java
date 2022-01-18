@@ -18,6 +18,9 @@ public class AddressValidator implements ConstraintValidator<ValidAddress, Long>
 
     @Override
     public boolean isValid(Long addressId, ConstraintValidatorContext constraintValidatorContext) {
+        if (addressId == null) {
+            return false;
+        }
         return addressService.checkIfAddressExists(addressId);
     }
 }

@@ -18,6 +18,9 @@ public class UniqueDepartmentNameValidator implements ConstraintValidator<Unique
 
     @Override
     public boolean isValid(String departmentName, ConstraintValidatorContext constraintValidatorContext) {
+        if (departmentName == null) {
+            return false;
+        }
         return departmentService.getDepartmentByName(departmentName).isEmpty();
     }
 }
