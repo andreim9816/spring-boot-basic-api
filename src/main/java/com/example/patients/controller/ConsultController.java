@@ -53,7 +53,7 @@ public class ConsultController {
                 .body(result);
     }
 
-    @GetMapping("/filtered")
+    @GetMapping("/search")
     @Operation(
             method = "GET",
             summary = "Get all consults between patient and doctor"

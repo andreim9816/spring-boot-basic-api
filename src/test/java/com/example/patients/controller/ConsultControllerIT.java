@@ -1,6 +1,7 @@
 package com.example.patients.controller;
 
 import com.example.patients.dto.input.ReqConsultDto;
+import com.example.patients.exception.EntityNotFoundException;
 import com.example.patients.mapper.ConsultMapper;
 import com.example.patients.model.Consult;
 import com.example.patients.model.Doctor;
@@ -120,7 +121,7 @@ class ConsultControllerIT {
         when(patientService.checkIfPatientExists(patientId)).thenReturn(true);
         when(consultService.getAllConsultsForDoctorAndPatient(doctorId, patientId)).thenReturn(Arrays.asList(consult1, consult2));
 
-        mockMvc.perform(get("/consults/filtered")
+        mockMvc.perform(get("/consults/search")
                         .contentType(MediaType.APPLICATION_JSON)
                         .param("doctorId", String.valueOf(doctorId))
                         .param("patientId", String.valueOf(patientId)))
@@ -144,7 +145,7 @@ class ConsultControllerIT {
         when(patientService.checkIfPatientExists(doctorId)).thenReturn(false);
         when(consultService.getAllConsultsForDoctorAndPatient(doctorId, patientId)).thenReturn(Arrays.asList(consult1, consult2));
 
-        mockMvc.perform(get("/consults/filtered")
+        mockMvc.perform(get("/consults/search")
                         .contentType(MediaType.APPLICATION_JSON)
                         .param("doctorId", String.valueOf(doctorId))
                         .param("patientId", String.valueOf(patientId)))
@@ -163,7 +164,7 @@ class ConsultControllerIT {
         when(patientService.checkIfPatientExists(patientId)).thenReturn(true);
         when(consultService.getAllConsultsForDoctorAndPatient(doctorId, patientId)).thenReturn(Arrays.asList(consult1, consult2));
 
-        mockMvc.perform(get("/consults/filtered")
+        mockMvc.perform(get("/consults/search")
                         .contentType(MediaType.APPLICATION_JSON)
                         .param("doctorId", String.valueOf(doctorId))
                         .param("patientId", String.valueOf(patientId)))
@@ -194,11 +195,17 @@ class ConsultControllerIT {
     @Test
     @DisplayName("Get consult by ID fails at validation")
     void getConsultByIdFail() throws Exception {
-        when(consultService.checkIfConsultExists(consult1.getId())).thenReturn(false);
+
+        EntityNotFoundException exception = EntityNotFoundException.builder()
+                .entityId(consult1.getId())
+                .entityType("Consult")
+                .build();
+
+        when(consultService.getConsultById(consult1.getId())).thenThrow(exception);
 
         mockMvc.perform(get("/consults/{consult-id}", consult1.getId()))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$[0].message").value("Invalid consult ID!"));
+                .andExpect(jsonPath("$.message").value(String.format("Consult with ID %s doesn't exist!", consult1.getId())));
     }
 
     @Test
